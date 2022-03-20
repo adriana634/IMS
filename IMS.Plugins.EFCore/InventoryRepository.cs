@@ -7,6 +7,7 @@ namespace IMS.Plugins.EFCore
     public class InventoryRepository : IInventoryRepository
     {
         private readonly IMSContext _db;
+
         public InventoryRepository(IMSContext db)
         {
             this._db = db;
