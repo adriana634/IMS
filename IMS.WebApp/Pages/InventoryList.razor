@@ -4,7 +4,7 @@
 <br/>
 <ViewInventoriesComponent OnSearchInventories="OnSearchInventories"></ViewInventoriesComponent>
 
-@if (this._inventories != null)
+@if (inventories != null)
 {
     <table class="table">
         <thead>
@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(Inventory inventory in this._inventories)
+            @foreach(Inventory inventory in inventories)
             {
                 <tr>
                     <td>@inventory.InventoryName</td>
@@ -32,10 +32,10 @@
 }
 
 @code {
-    private List<Inventory>? _inventories;
+    private List<Inventory>? inventories;
 
     private void OnSearchInventories(List<Inventory> inventories)
     {
-        this._inventories = inventories;
+        this.inventories = inventories;
     }
 }

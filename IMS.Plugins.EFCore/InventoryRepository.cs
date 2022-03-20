@@ -6,16 +6,16 @@ namespace IMS.Plugins.EFCore
 {
     public class InventoryRepository : IInventoryRepository
     {
-        private readonly IMSContext _db;
+        private readonly IMSContext db;
 
         public InventoryRepository(IMSContext db)
         {
-            this._db = db;
+            this.db = db;
         }
 
         public async Task<IEnumerable<Inventory>> GetInventoriesByName(string name)
         {
-            return await this._db.Inventories
+            return await this.db.Inventories
                 .Where(inventory => inventory.InventoryName.Contains(name, StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(name))
                 .ToListAsync();
         }
