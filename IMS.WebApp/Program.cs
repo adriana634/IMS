@@ -30,7 +30,9 @@ builder.Services.AddDbContext<IMSContext>(options =>
 builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
 
 //DI use cases
-builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
+builder.Services
+    .AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>()
+    .AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 
 WebApplication app = builder.Build();
 
