@@ -32,7 +32,9 @@ builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
 //DI use cases
 builder.Services
     .AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>()
-    .AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
+    .AddTransient<IAddInventoryUseCase, AddInventoryUseCase>()
+    .AddTransient<IEditInventoryUseCase, EditInventoryUseCase>()
+    .AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
 
 WebApplication app = builder.Build();
 

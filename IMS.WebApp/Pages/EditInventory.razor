@@ -1,9 +1,10 @@
-﻿@page "/addinventory"
+﻿@page "/editinventory/{inventoryId:int}"
 
-@inject IAddInventoryUseCase AddInventoryUseCase
 @inject NavigationManager NavigationManager
+@inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
+@inject IEditInventoryUseCase EditInventoryUseCase
 
-<h3>Add Inventory</h3>
+<h3>Edit Inventory</h3>
 <br/>
 @if (inventory != null)
 {
@@ -33,20 +34,21 @@
 }
 
 @code {
+    [Parameter]
+    public int InventoryId { get; set; }
+
     private Inventory? inventory;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-
-        inventory = new Inventory();
+        this.inventory = await ViewInventoryByIdUseCase.ExecuteAsync(InventoryId);
     }
 
-    private async Task OnValidSubmit()
+    public async Task OnValidSubmit()
     {
         if (this.inventory != null)
         {
-            await AddInventoryUseCase.ExecuteAsync(this.inventory);    
+            await EditInventoryUseCase.ExecuteAsync(this.inventory);
             NavigationManager.NavigateTo("/inventories");
         }
     }
