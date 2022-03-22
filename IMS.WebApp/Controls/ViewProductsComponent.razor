@@ -1,0 +1,28 @@
+﻿@using IMS.CoreBusiness
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase  
+
+<div class="input-group mb-3">
+    <input
+        type="text" 
+        class="form-control form-control-lg"
+        placeholder="Type product name here to search"
+        @bind-value="productNameToSearch"/>
+    <button type="button" class="input-group-text btn-primary"
+        @onclick="ViewProducts">View</button>
+</div>
+
+@code {
+    private string? productNameToSearch;
+
+    [Parameter]
+    public EventCallback<List<Product>> OnSearchProducts { get; set; }
+
+    private async Task ViewProducts()
+    {
+        string searchParameter = productNameToSearch ?? "";
+        List<Product>? products = (await ViewProductsByNameUseCase
+            .ExecuteAsync(searchParameter))?.ToList();
+        
+        await OnSearchProducts.InvokeAsync(products);
+    }
+}

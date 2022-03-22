@@ -27,14 +27,17 @@ builder.Services.AddDbContext<IMSContext>(options =>
 });
 
 //DI repositories
-builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
+builder.Services
+    .AddTransient<IInventoryRepository, InventoryRepository>()
+    .AddTransient<IProductRepository, ProductRepository>();
 
 //DI use cases
 builder.Services
     .AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>()
     .AddTransient<IAddInventoryUseCase, AddInventoryUseCase>()
     .AddTransient<IEditInventoryUseCase, EditInventoryUseCase>()
-    .AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
+    .AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>()
+    .AddTransient<IViewProductsByNameUseCase, ViewProductsUseCase>();
 
 WebApplication app = builder.Build();
 

@@ -1,0 +1,62 @@
+﻿@page "/products"
+
+@inject NavigationManager NavigationManager
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase  
+
+<h3>Product List</h3>
+<br/>
+<ViewProductsComponent OnSearchProducts="@OnSearchProducts"></ViewProductsComponent>
+
+@if (products != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Product product in products)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.Price.ToString("c")</td>
+                    <td>
+                        <button type="button" class="btn btn-light" @onclick="() => EditProduct(product.ProductId)">Edit</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br/>
+<button type="button" class="btn btn-primary" @onclick="AddProduct">Add Product</button>
+
+@code {
+    private List<Product>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IEnumerable<Product> products = await ViewProductsByNameUseCase.ExecuteAsync();
+        this.products = products.ToList();
+    }
+
+    private void OnSearchProducts(List<Product> products)
+    {
+        this.products = products;
+    }
+
+    private void AddProduct()
+    {
+        NavigationManager.NavigateTo("/addproduct");
+    }
+
+    private void EditProduct(int productId)
+    {
+        NavigationManager.NavigateTo($"/editproduct/{productId}");
+    }
+}
