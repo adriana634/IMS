@@ -1,0 +1,55 @@
+﻿@using IMS.CoreBusiness
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+
+<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="ViewInventories"></SearchComponent>
+
+@if (inventories != null)
+{
+    <div class="inventory-list-container">
+        <ul class="inventory-list">
+            @foreach (Inventory inventory in inventories)
+            {
+                <li 
+                    class="inventory-list__item" 
+                    @onclick="() => SelectInventory(inventory)"
+                    @key="inventory.InventoryId">
+                        @inventory.InventoryName
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private List<Inventory>? inventories;
+    private Inventory? selectedInventory;
+
+    [Parameter]
+    public EventCallback<Inventory> OnSelectInventory { get; set; }
+
+    private async Task ViewInventories(string inventoryNameToSearch)
+    {
+        string searchParameter = inventoryNameToSearch ?? "";
+        List<Inventory>? inventories = (await ViewInventoriesByNameUseCase
+            .ExecuteAsync(searchParameter))?.ToList();
+    }
+
+    private async Task SelectInventory(Inventory inventory)
+    {
+        selectedInventory = inventory;
+        await OnSelectInventory.InvokeAsync(inventory);
+    }
+}
+
+<style>
+    .inventory-list-container {
+        overflow-y: auto;
+        max-height: 300px;
+    }
+    .inventory-list {
+        list-style-type: none;
+    }
+    .inventory-list__item {
+        cursor: pointer;
+    }
+</style>

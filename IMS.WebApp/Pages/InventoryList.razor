@@ -21,14 +21,7 @@
         <tbody>
             @foreach(Inventory inventory in inventories)
             {
-                <tr>
-                    <td>@inventory.InventoryName</td>
-                    <td>@inventory.Quantity</td>
-                    <td>@inventory.Price.ToString("c")</td>
-                    <td>
-                        <button type="button" class="btn btn-light" @onclick="() => EditInventory(inventory.InventoryId)">Edit</button>
-                    </td>
-                </tr>
+               <InventoryItemComponent Inventory=@inventory></InventoryItemComponent>
             }
         </tbody>
     </table>
@@ -53,10 +46,5 @@
     private void AddInventory()
     {
         NavigationManager.NavigateTo("/addinventory");
-    }
-
-    private void EditInventory(int inventoryId)
-    {
-        NavigationManager.NavigateTo($"/editinventory/{inventoryId}");
     }
 }

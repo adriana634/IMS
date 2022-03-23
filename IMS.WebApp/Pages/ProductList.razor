@@ -21,14 +21,7 @@
         <tbody>
             @foreach(Product product in products)
             {
-                <tr>
-                    <td>@product.ProductName</td>
-                    <td>@product.Quantity</td>
-                    <td>@product.Price.ToString("c")</td>
-                    <td>
-                        <button type="button" class="btn btn-light" @onclick="() => EditProduct(product.ProductId)">Edit</button>
-                    </td>
-                </tr>
+                <ProductItemComponent Product=@product></ProductItemComponent>
             }
         </tbody>
     </table>
@@ -53,10 +46,5 @@
     private void AddProduct()
     {
         NavigationManager.NavigateTo("/addproduct");
-    }
-
-    private void EditProduct(int productId)
-    {
-        NavigationManager.NavigateTo($"/editproduct/{productId}");
     }
 }
