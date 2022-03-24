@@ -1,0 +1,32 @@
+﻿<div class="form-group">
+    <label>Inventories</label>
+    <SelectInventoryComponent OnSelectInventory="OnSelectInventory"></SelectInventoryComponent>
+</div>
+
+@if (inventories != null)
+{
+    <ul>
+        @foreach(Inventory inventory in inventories)
+        {
+            <li>@inventory.InventoryName &nbsp; <button class="btn btn-link" type="button" @onclick="() => RemoveInventory(inventory)">Remove</button></li>
+        }
+    </ul>    
+}
+
+
+@code {
+    private List<Inventory> inventories = new List<Inventory>();
+
+    private async Task OnSelectInventory(Inventory inventory)
+    {
+        if (this.inventories.All((listInventory) => !listInventory.InventoryName.Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase)))
+        {
+            this.inventories.Add(inventory);
+        }
+    }
+
+    private void RemoveInventory(Inventory inventory)
+    {
+        this.inventories.Remove(inventory);
+    }
+}

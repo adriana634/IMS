@@ -5,7 +5,7 @@
 
 <h3>Product List</h3>
 <br/>
-<ViewProductsComponent OnSearchProducts="@OnSearchProducts"></ViewProductsComponent>
+<ViewProductsComponent OnSearchProducts="OnSearchProducts"></ViewProductsComponent>
 
 @if (products != null)
 {
@@ -21,7 +21,7 @@
         <tbody>
             @foreach(Product product in products)
             {
-                <ProductItemComponent Product=@product></ProductItemComponent>
+                <ProductItemComponent Product="product"></ProductItemComponent>
             }
         </tbody>
     </table>

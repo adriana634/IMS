@@ -13,11 +13,22 @@ namespace IMS.Plugins.EFCore
             this.db = db;
         }
 
+        
+
         public async Task<List<Product>> GetProductsByNameAsync(string name)
         {
             return await this.db.Products
-                .Where(product => product.ProductName.Contains(name, StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(name))
+                .Where(product => product.ProductName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
                 .ToListAsync();
+        }
+
+        public async Task AddProductAsync(Product product)
+        {
+            //To prevent different products from having the same name
+            if (this.db.Inventories.Any(dbInventory => dbInventory.InventoryName.IgnoreCaseEquals(product.ProductName)))
+                return;
+
+            this.db.Products.Add(product);
         }
     }
 }

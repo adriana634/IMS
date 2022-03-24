@@ -16,14 +16,14 @@ namespace IMS.Plugins.EFCore
         public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
         {
             return await this.db.Inventories
-                .Where(inventory => inventory.InventoryName.Contains(name, StringComparison.CurrentCultureIgnoreCase) || string.IsNullOrWhiteSpace(name))
+                .Where(inventory => inventory.InventoryName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
                 .ToListAsync();
         }
 
         public async Task AddInventoryAsync(Inventory inventory)
         {
             //To prevent different inventories from having the same name
-            if (this.db.Inventories.Any(dbInventory => dbInventory.InventoryName.Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase)))
+            if (this.db.Inventories.Any(dbInventory => dbInventory.InventoryName.IgnoreCaseEquals(inventory.InventoryName)))
                 return;
 
             await this.db.Inventories.AddAsync(inventory);
@@ -34,7 +34,7 @@ namespace IMS.Plugins.EFCore
         {
             //To prevent different inventories from having the same name
             if (db.Inventories.Any(dbInventory => dbInventory.InventoryId != inventory.InventoryId 
-                                                && dbInventory.InventoryName.Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase)))
+                                                && dbInventory.InventoryName.IgnoreCaseEquals(inventory.InventoryName)))
                 return;
 
             Inventory? dbInventory = await this.db.Inventories.FindAsync(inventory.InventoryId);

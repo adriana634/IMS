@@ -3,7 +3,7 @@
 
 <SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="ViewInventories"></SearchComponent>
 
-@if (inventories != null)
+@if (inventories != null && selectedInventory == null)
 {
     <div class="inventory-list-container">
         <ul class="inventory-list">
@@ -32,11 +32,13 @@
         string searchParameter = inventoryNameToSearch ?? "";
         List<Inventory>? inventories = (await ViewInventoriesByNameUseCase
             .ExecuteAsync(searchParameter))?.ToList();
+        this.inventories = inventories;
+        this.selectedInventory = null;
     }
 
     private async Task SelectInventory(Inventory inventory)
     {
-        selectedInventory = inventory;
+        this.selectedInventory = inventory;
         await OnSelectInventory.InvokeAsync(inventory);
     }
 }
