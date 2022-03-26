@@ -1,13 +1,12 @@
 ﻿@using IMS.CoreBusiness
-@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 
-<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="ViewInventories"></SearchComponent>
+<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="SearchInventory"></SearchComponent>
 
-@if (inventories != null && selectedInventory == null)
+@if (Inventories != null && selectedInventory == null)
 {
     <div class="inventory-list-container">
         <ul class="inventory-list">
-            @foreach (Inventory inventory in inventories)
+            @foreach (Inventory inventory in Inventories)
             {
                 <li 
                     class="inventory-list__item" 
@@ -21,19 +20,23 @@
 }
 
 @code {
-    private List<Inventory>? inventories;
-    private Inventory? selectedInventory;
+    [Parameter]
+    public IReadOnlyList<Inventory>? Inventories { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSearchInventory { get; set; }
 
     [Parameter]
     public EventCallback<Inventory> OnSelectInventory { get; set; }
 
-    private async Task ViewInventories(string inventoryNameToSearch)
+    private Inventory? selectedInventory;
+
+    private async Task SearchInventory(string inventoryNameToSearch)
     {
-        string searchParameter = inventoryNameToSearch ?? "";
-        List<Inventory>? inventories = (await ViewInventoriesByNameUseCase
-            .ExecuteAsync(searchParameter))?.ToList();
-        this.inventories = inventories;
         this.selectedInventory = null;
+
+        string searchParameter = inventoryNameToSearch ?? "";
+        await OnSearchInventory.InvokeAsync(searchParameter);
     }
 
     private async Task SelectInventory(Inventory inventory)
@@ -47,9 +50,6 @@
     .inventory-list-container {
         overflow-y: auto;
         max-height: 300px;
-    }
-    .inventory-list {
-        list-style-type: none;
     }
     .inventory-list__item {
         cursor: pointer;

@@ -13,8 +13,6 @@ namespace IMS.Plugins.EFCore
             this.db = db;
         }
 
-        
-
         public async Task<List<Product>> GetProductsByNameAsync(string name)
         {
             return await this.db.Products
@@ -25,10 +23,11 @@ namespace IMS.Plugins.EFCore
         public async Task AddProductAsync(Product product)
         {
             //To prevent different products from having the same name
-            if (this.db.Inventories.Any(dbInventory => dbInventory.InventoryName.IgnoreCaseEquals(product.ProductName)))
+            if (this.db.Products.Any(dbProduct => dbProduct.ProductName.IgnoreCaseEquals(product.ProductName)))
                 return;
 
             this.db.Products.Add(product);
+            await this.db.SaveChangesAsync();
         }
     }
 }

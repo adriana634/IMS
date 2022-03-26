@@ -14,6 +14,20 @@ namespace IMS.Plugins.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Build relationships
+            modelBuilder.Entity<ProductInventory>()
+                .HasKey(productInventory => new { productInventory.ProductId, productInventory.InventoryId });
+
+            modelBuilder.Entity<ProductInventory>()
+                .HasOne(productInventory => productInventory.Product)
+                .WithMany(product => product.ProductInventories)
+                .HasForeignKey(productInventory => productInventory.ProductId);
+
+            modelBuilder.Entity<ProductInventory>()
+                .HasOne(productInventory => productInventory.Inventory)
+                .WithMany(inventory => inventory.ProductInventories)
+                .HasForeignKey(productInventory => productInventory.InventoryId);
+
             //Seeding data
             modelBuilder.Entity<Inventory>().HasData(
                 new Inventory { InventoryId = 1, InventoryName = "Electric Engine", Price = 1000, Quantity = 1 },
@@ -27,6 +41,25 @@ namespace IMS.Plugins.EFCore
                 new Product { ProductId = 1, ProductName = "Steam train", Price = 350000, Quantity = 1 },
                 new Product { ProductId = 2, ProductName = "Electric train", Price = 480400, Quantity = 1 },
                 new Product { ProductId = 3, ProductName = "Monorail", Price = 200400, Quantity = 1 }
+            );
+
+            modelBuilder.Entity<ProductInventory>().HasData(
+                new ProductInventory { ProductId = 1, InventoryId = 1, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 1, InventoryId = 2, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 1, InventoryId = 3, InventoryQuantity = 4 },
+                new ProductInventory { ProductId = 1, InventoryId = 4, InventoryQuantity = 5 }
+            );
+
+            modelBuilder.Entity<ProductInventory>().HasData(
+                new ProductInventory { ProductId = 2, InventoryId = 1, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 2, InventoryId = 2, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 2, InventoryId = 3, InventoryQuantity = 4 }
+            );
+
+            modelBuilder.Entity<ProductInventory>().HasData(
+                new ProductInventory { ProductId = 3, InventoryId = 1, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 3, InventoryId = 2, InventoryQuantity = 1 },
+                new ProductInventory { ProductId = 3, InventoryId = 3, InventoryQuantity = 4 }
             );
         }
     }

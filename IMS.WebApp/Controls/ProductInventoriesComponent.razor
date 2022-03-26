@@ -1,32 +1,81 @@
-﻿<div class="form-group">
+﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+
+<div class="form-group">
     <label>Inventories</label>
-    <SelectInventoryComponent OnSelectInventory="OnSelectInventory"></SelectInventoryComponent>
+    <SelectInventoryComponent 
+        Inventories="inventories"  
+        OnSearchInventory="OnSearchInventory" 
+        OnSelectInventory="OnSelectInventory">
+    </SelectInventoryComponent>
 </div>
 
-@if (inventories != null)
+@if (ProductInventories != null && ProductInventories.Count > 0)
 {
-    <ul>
-        @foreach(Inventory inventory in inventories)
-        {
-            <li>@inventory.InventoryName &nbsp; <button class="btn btn-link" type="button" @onclick="() => RemoveInventory(inventory)">Remove</button></li>
-        }
-    </ul>    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(ProductInventory productInventory in ProductInventories)
+            {
+                <tr>
+                    <td>
+                        @productInventory.Inventory.InventoryName
+                    </td>
+                    <td>
+                        <input type="number" min="0" max="@productInventory.Inventory.Quantity" @bind-value="productInventory.InventoryQuantity"/>
+                    </td>
+                    <td>
+                        <button class="btn btn-link" type="button" @onclick="() => RemoveInventory(productInventory)">Remove</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
-
 @code {
-    private List<Inventory> inventories = new List<Inventory>();
+    [Parameter]
+    public IReadOnlyList<ProductInventory>? ProductInventories { get; set; }
 
-    private async Task OnSelectInventory(Inventory inventory)
+    [Parameter]
+    public EventCallback<ProductInventory> OnAddProductInventory { get; set; }
+
+    [Parameter]
+    public EventCallback<ProductInventory> OnRemoveProductInventory { get; set; }
+
+    private List<Inventory>? inventories;
+
+    private async Task OnSearchInventory(string searchParameter)
     {
-        if (this.inventories.All((listInventory) => !listInventory.InventoryName.Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase)))
+        List<Inventory>? inventories = (await ViewInventoriesByNameUseCase
+            .ExecuteAsync(searchParameter))?.ToList();
+        this.inventories = inventories;
+    }
+
+    private void OnSelectInventory(Inventory inventory)
+    {
+        if (this.ProductInventories != null)
         {
-            this.inventories.Add(inventory);
+            if (this.ProductInventories.All((listInventory) => !listInventory.Inventory.InventoryName.Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase)))
+            {
+                ProductInventory productInventory = new ProductInventory
+                {
+                    InventoryId = inventory.InventoryId,
+                    Inventory = inventory
+                };
+
+                this.OnAddProductInventory.InvokeAsync(productInventory);
+            }
         }
     }
 
-    private void RemoveInventory(Inventory inventory)
+    private void RemoveInventory(ProductInventory productInventory)
     {
-        this.inventories.Remove(inventory);
+        this.OnRemoveProductInventory.InvokeAsync(productInventory);
     }
 }
