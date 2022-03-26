@@ -1,6 +1,6 @@
 ﻿@using IMS.CoreBusiness
 
-<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="SearchInventory"></SearchComponent>
+<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="SearchInventoryAsync"></SearchComponent>
 
 @if (Inventories != null && selectedInventory == null)
 {
@@ -10,7 +10,7 @@
             {
                 <li 
                     class="inventory-list__item" 
-                    @onclick="() => SelectInventory(inventory)"
+                    @onclick="() => SelectInventoryAsync(inventory)"
                     @key="inventory.InventoryId">
                         @inventory.InventoryName
                 </li>
@@ -31,7 +31,7 @@
 
     private Inventory? selectedInventory;
 
-    private async Task SearchInventory(string inventoryNameToSearch)
+    private async Task SearchInventoryAsync(string inventoryNameToSearch)
     {
         this.selectedInventory = null;
 
@@ -39,7 +39,7 @@
         await OnSearchInventory.InvokeAsync(searchParameter);
     }
 
-    private async Task SelectInventory(Inventory inventory)
+    private async Task SelectInventoryAsync(Inventory inventory)
     {
         this.selectedInventory = inventory;
         await OnSelectInventory.InvokeAsync(inventory);

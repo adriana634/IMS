@@ -1,13 +1,13 @@
 ﻿@using IMS.CoreBusiness
 @inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 
-<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="ViewInventories"></SearchComponent>
+<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="ViewInventoriesAsync"></SearchComponent>
 
 @code {
     [Parameter]
     public EventCallback<List<Inventory>> OnSearchInventories { get; set; }
 
-    private async Task ViewInventories(string inventoryNameToSearch)
+    private async Task ViewInventoriesAsync(string inventoryNameToSearch)
     {
         string searchParameter = inventoryNameToSearch ?? "";
         List<Inventory>? inventories = (await ViewInventoriesByNameUseCase

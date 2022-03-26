@@ -6,12 +6,10 @@
         @bind-value="valueToSearch"
         />
     <button type="button" class="input-group-text btn-primary"
-        @onclick="Search">@ActionText</button>
+        @onclick="SearchAsync">@ActionText</button>
 </div>
 
 @code {
-    private string? valueToSearch;
-
     [Parameter]
     public EventCallback<string> OnSearch { get; set; }
 
@@ -21,7 +19,9 @@
     [Parameter]
     public string? ActionText { get; set; }
 
-    private async Task Search()
+    private string? valueToSearch;
+
+    private async Task SearchAsync()
     {
         await OnSearch.InvokeAsync(valueToSearch);
     }

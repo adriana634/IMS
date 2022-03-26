@@ -4,8 +4,8 @@
     <label>Inventories</label>
     <SelectInventoryComponent 
         Inventories="inventories"  
-        OnSearchInventory="OnSearchInventory" 
-        OnSelectInventory="OnSelectInventory">
+        OnSearchInventory="OnSearchInventoryAsync" 
+        OnSelectInventory="OnSelectInventoryAsync">
     </SelectInventoryComponent>
 </div>
 
@@ -27,10 +27,10 @@
                         @productInventory.Inventory.InventoryName
                     </td>
                     <td>
-                        <input type="number" min="0" max="@productInventory.Inventory.Quantity" @bind-value="productInventory.InventoryQuantity"/>
+                        <input type="number" min="0" @bind-value="productInventory.InventoryQuantity"/>
                     </td>
                     <td>
-                        <button class="btn btn-link" type="button" @onclick="() => RemoveInventory(productInventory)">Remove</button>
+                        <button class="btn btn-link" type="button" @onclick="() => RemoveInventoryAsync(productInventory)">Remove</button>
                     </td>
                 </tr>
             }
@@ -50,14 +50,14 @@
 
     private List<Inventory>? inventories;
 
-    private async Task OnSearchInventory(string searchParameter)
+    private async Task OnSearchInventoryAsync(string searchParameter)
     {
         List<Inventory>? inventories = (await ViewInventoriesByNameUseCase
             .ExecuteAsync(searchParameter))?.ToList();
         this.inventories = inventories;
     }
 
-    private void OnSelectInventory(Inventory inventory)
+    private async Task OnSelectInventoryAsync(Inventory inventory)
     {
         if (this.ProductInventories != null)
         {
@@ -69,13 +69,13 @@
                     Inventory = inventory
                 };
 
-                this.OnAddProductInventory.InvokeAsync(productInventory);
+                await this.OnAddProductInventory.InvokeAsync(productInventory);
             }
         }
     }
 
-    private void RemoveInventory(ProductInventory productInventory)
+    private async Task RemoveInventoryAsync(ProductInventory productInventory)
     {
-        this.OnRemoveProductInventory.InvokeAsync(productInventory);
+        await this.OnRemoveProductInventory.InvokeAsync(productInventory);
     }
 }

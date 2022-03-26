@@ -7,7 +7,7 @@
 <br/>
 @if (inventory != null)
 {
-    <EditForm Model="inventory" OnValidSubmit="OnValidSubmit">
+    <EditForm Model="inventory" OnValidSubmit="OnValidSubmitAsync">
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
         
@@ -42,7 +42,7 @@
         inventory = new Inventory();
     }
 
-    private async Task OnValidSubmit()
+    private async Task OnValidSubmitAsync()
     {
         if (this.inventory != null)
         {

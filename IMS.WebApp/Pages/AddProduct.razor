@@ -7,7 +7,7 @@
 <br/>
 @if (product != null)
 {
-    <EditForm Model="product" OnValidSubmit="OnValidSubmit">
+    <EditForm Model="product" OnValidSubmit="OnValidSubmitAsync">
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
 
@@ -45,6 +45,9 @@
     protected override void OnInitialized()
     {
         this.product = new Product();
+
+        this.productInventories.ForEach(productInventory => productInventory.ProductId = this.product.ProductId);
+        this.product.ProductInventories = this.productInventories;
     }
 
     private void OnAddProductInventory(ProductInventory productInventory)
@@ -57,13 +60,10 @@
         this.productInventories.Remove(productInventory);
     }
 
-    private async Task OnValidSubmit()
+    private async Task OnValidSubmitAsync()
     {
         if (this.product != null)
         {
-            this.productInventories.ForEach(productInventory => productInventory.ProductId = this.product.ProductId);
-            this.product.ProductInventories = this.productInventories;
-
             await AddProductUseCase.ExecuteAsync(this.product);
             NavigationManager.NavigateTo("/products");
         }
