@@ -29,5 +29,33 @@ namespace IMS.Plugins.EFCore
             this.db.Products.Add(product);
             await this.db.SaveChangesAsync();
         }
+
+        public async Task UpdateProductAsync(Product product)
+        {
+            //To prevent different products from having the same name
+            if (db.Products.Any(dbProduct => dbProduct.ProductId != product.ProductId
+                                                && dbProduct.ProductName.IgnoreCaseEquals(product.ProductName)))
+                return;
+
+            Product? dbProduct = await this.db.Products.FindAsync(product.ProductId);
+
+            if (dbProduct != null)
+            {
+                dbProduct.ProductName = product.ProductName;
+                dbProduct.Price = product.Price;
+                dbProduct.Quantity = product.Quantity;
+                dbProduct.ProductInventories = product.ProductInventories;
+
+                await this.db.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Product?> GetProductByIdAsync(int productId)
+        {
+            return await this.db.Products
+                .Include(product => product.ProductInventories)
+                .ThenInclude(productInventory => productInventory.Inventory)
+                .FirstAsync(product => product.ProductId == productId);
+        }
     }
 }

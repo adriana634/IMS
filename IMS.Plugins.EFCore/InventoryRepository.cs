@@ -47,7 +47,6 @@ namespace IMS.Plugins.EFCore
 
                 await this.db.SaveChangesAsync();
             }
-            
         }
 
         public async Task<Inventory?> GetInventoryByIdAsync(int inventoryId)

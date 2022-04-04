@@ -1,13 +1,20 @@
-﻿namespace IMS.CoreBusiness
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IMS.CoreBusiness
 {
     public class ProductInventory
     {
+        [Required]
         public int ProductId { get; set; }
-        public Product? Product { get; set; }
+        [Required]
+        public Product Product { get; set; } = default!;
 
+        [Required]
         public int InventoryId { get; set; }
-        public Inventory? Inventory { get; set; }
+        [Required]
+        public Inventory Inventory { get; set; } = default!;
 
+        [Required]
         public int InventoryQuantity { get; set; }
     }
 }

@@ -3,11 +3,11 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.UseCases
 {
-    public class AddProductUseCase : IAddProductUseCase
+    public class EditProductUseCase : IEditProductUseCase
     {
         private readonly IProductRepository productRepository;
 
-        public AddProductUseCase(IProductRepository productRepository)
+        public EditProductUseCase(IProductRepository productRepository)
         {
             this.productRepository = productRepository;
         }
@@ -16,7 +16,7 @@ namespace IMS.UseCases
         {
             if (product == null) return;
 
-            await this.productRepository.AddProductAsync(product);
+            await this.productRepository.UpdateProductAsync(product);
         }
     }
 }

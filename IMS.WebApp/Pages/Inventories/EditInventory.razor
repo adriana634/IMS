@@ -41,7 +41,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.inventory = await ViewInventoryByIdUseCase.ExecuteAsync(InventoryId);
+        this.inventory = await ViewInventoryByIdUseCase.ExecuteAsync(this.InventoryId);
     }
 
     public async Task OnValidSubmitAsync()

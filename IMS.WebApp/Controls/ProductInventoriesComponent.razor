@@ -40,7 +40,7 @@
 
 @code {
     [Parameter]
-    public IReadOnlyList<ProductInventory>? ProductInventories { get; set; }
+    public IReadOnlyCollection<ProductInventory>? ProductInventories { get; set; }
 
     [Parameter]
     public EventCallback<ProductInventory> OnAddProductInventory { get; set; }

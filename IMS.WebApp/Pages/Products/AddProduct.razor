@@ -1,0 +1,17 @@
+﻿@page "/addproduct"
+
+@inject IAddProductUseCase AddProductUseCase
+@inject NavigationManager NavigationManager
+
+<h3>Add Product</h3>
+<br/>
+
+<ProductFormComponent OnValidSubmitAsync="OnValidSubmitAsync"></ProductFormComponent>
+
+@code {
+    private async Task OnValidSubmitAsync(Product product)
+    {
+        await AddProductUseCase.ExecuteAsync(product);
+        NavigationManager.NavigateTo("/products");
+    }
+}

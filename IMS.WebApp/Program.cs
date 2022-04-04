@@ -38,7 +38,9 @@ builder.Services
     .AddTransient<IEditInventoryUseCase, EditInventoryUseCase>()
     .AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>()
     .AddTransient<IViewProductsByNameUseCase, ViewProductsUseCase>()
-    .AddTransient<IAddProductUseCase, AddProductUseCase>();
+    .AddTransient<IAddProductUseCase, AddProductUseCase>()
+    .AddTransient<IViewProductByIdUseCase, ViewProductByIdUseCase>()
+    .AddTransient<IEditProductUseCase, EditProductUseCase>();
 
 WebApplication app = builder.Build();
 

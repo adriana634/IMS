@@ -1,0 +1,69 @@
+﻿@if (this.Product != null && this.Product.ProductInventories != null)
+{
+  <EditForm Model="Product" OnValidSubmit="ValidSubmitAsync">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="name">Product name</label>
+            <InputText id="name" @bind-Value="Product!.ProductName" class="form-control"></InputText>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <InputNumber id="quantity" @bind-Value="Product.Quantity" class="form-control"></InputNumber>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <InputNumber id="price" @bind-Value="Product.Price" class="form-control"></InputNumber>
+        </div>
+
+        <ProductInventoriesComponent 
+            ProductInventories="Product.ProductInventories"
+            OnAddProductInventory="OnAddProductInventory"
+            OnRemoveProductInventory="OnRemoveProductInventory">
+        </ProductInventoriesComponent>
+
+        <br/>
+        <button type="submit" class="btn btn-primary">Save</button>
+
+    </EditForm>  
+} 
+
+@code {
+    [Parameter]
+    public Product? Product { get; set; }
+
+    [Parameter]
+    public EventCallback<Product> OnValidSubmitAsync { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (this.Product == null)
+        {
+            this.Product = new Product();    
+        }
+
+        if (this.Product.ProductInventories == null)
+        {
+            this.Product.ProductInventories = new List<ProductInventory>();
+            this.Product.ProductInventories.ForEach(productInventory => productInventory.ProductId = this.Product.ProductId);            
+        }
+    }
+
+    private void OnAddProductInventory(ProductInventory productInventory)
+    {
+        this.Product!.ProductInventories!.Add(productInventory);
+    }
+
+    private void OnRemoveProductInventory(ProductInventory productInventory)
+    {
+        this.Product!.ProductInventories!.Remove(productInventory);
+    }
+
+    private async Task ValidSubmitAsync()
+    {
+        await OnValidSubmitAsync.InvokeAsync(this.Product);
+    }
+}

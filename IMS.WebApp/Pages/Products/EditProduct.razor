@@ -1,0 +1,30 @@
+﻿@page "/editproduct/{productId:int}"
+
+@inject IViewProductByIdUseCase ViewProductByIdUseCase
+@inject IEditProductUseCase EditProductUseCase
+@inject NavigationManager NavigationManager
+
+<h3>Edit Product</h3>
+
+@if (product != null)
+{
+    <ProductFormComponent Product="product" OnValidSubmitAsync="OnValidSubmitAsync"></ProductFormComponent>
+}
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+
+    private Product? product;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.product = await ViewProductByIdUseCase.ExecuteAsync(this.ProductId);
+    }
+
+    private async Task OnValidSubmitAsync(Product product)
+    {
+        await EditProductUseCase.ExecuteAsync(product);
+        NavigationManager.NavigateTo("/products");
+    }
+}
