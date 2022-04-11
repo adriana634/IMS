@@ -8,7 +8,6 @@
         <td>@Product.Price.ToString("c")</td>
         <td>
             <button type="button" class="btn btn-light" @onclick="() => EditProduct(Product.ProductId)">Edit</button>
-            <button type="button" class="btn btn-light" @onclick="() => DeleteProduct(Product)">Delete</button>
         </td>
     </tr>    
 }
@@ -21,9 +20,5 @@
     private void EditProduct(int productId)
     {
         NavigationManager.NavigateTo($"/editproduct/{productId}");
-    }
-
-    private void DeleteProduct(Product product)
-    {
     }
 }

@@ -5,17 +5,13 @@ namespace IMS.CoreBusiness
 {
     public class Product
     {
-        [Required]
         public int ProductId { get; set; }
 
-        [Required]
         public string ProductName { get; set; } = default!;
 
-        [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to 0")]
         public int Quantity { get; set; }
 
-        [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Price must be greater or equal to 0")]
         [Product_EnsurePriceIsGreaterThanInventoriesPrice]
         public double Price { get; set; }

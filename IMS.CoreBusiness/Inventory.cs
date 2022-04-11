@@ -4,10 +4,8 @@ namespace IMS.CoreBusiness
 {
     public class Inventory
     {
-        [Required]
         public int InventoryId { get; set; }
 
-        [Required]
         public string InventoryName { get; set; } = default!;
         
         [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to 0")]
@@ -16,6 +14,6 @@ namespace IMS.CoreBusiness
         [Range(0, double.MaxValue, ErrorMessage = "Price must be greater or equal to 0")]
         public double Price { get; set; }
 
-        public ICollection<ProductInventory> ProductInventories { get; set; } = default!;
+        public List<ProductInventory> ProductInventories { get; set; } = default!;
     }
 }
