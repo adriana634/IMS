@@ -7,6 +7,7 @@ namespace IMS.CoreBusiness
     {
         public int ProductId { get; set; }
 
+        [Required]
         public string ProductName { get; set; } = default!;
 
         [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to 0")]

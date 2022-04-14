@@ -23,10 +23,10 @@
                         @productInventory.Inventory.InventoryName
                     </td>
                     <td>
-                        <input type="number" min="0" @bind-value="productInventory.InventoryQuantity"/>
+                        <InputNumber min="1" @bind-Value="productInventory.InventoryQuantity" class="form-control" />
                     </td>
                     <td>
-                        <button class="btn btn-link" type="button" @onclick="() => RemoveInventoryAsync(productInventory)">Remove</button>
+                        <button class="btn btn-danger" type="button" @onclick="() => RemoveInventoryAsync(productInventory)">Remove</button>
                     </td>
                 </tr>
             }

@@ -1,22 +1,22 @@
 ﻿@if (this.Product != null && this.Product.ProductInventories != null)
 {
   <EditForm Model="Product" OnValidSubmit="ValidSubmitAsync">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
         <div class="form-group">
             <label for="name">Product name</label>
-            <InputText id="name" @bind-Value="Product.ProductName" class="form-control"></InputText>
+            <InputText id="name" @bind-Value="Product.ProductName" class="form-control" />
         </div>
 
         <div class="form-group">
             <label for="quantity">Quantity</label>
-            <InputNumber id="quantity" @bind-Value="Product.Quantity" class="form-control"></InputNumber>
+            <InputNumber id="quantity" @bind-Value="Product.Quantity" class="form-control" />
         </div>
 
         <div class="form-group">
             <label for="price">Price</label>
-            <InputNumber id="price" @bind-Value="Product.Price" class="form-control"></InputNumber>
+            <InputNumber id="price" @bind-Value="Product.Price" class="form-control" />
         </div>
 
         <ProductInventoriesComponent 
@@ -27,7 +27,6 @@
 
         <br/>
         <button type="submit" class="btn btn-primary">Save</button>
-
     </EditForm>  
 } 
 
