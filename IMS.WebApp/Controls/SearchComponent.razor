@@ -4,6 +4,7 @@
         class="form-control form-control-lg"
         placeholder="@Placeholder"
         @bind-value="valueToSearch"
+        @onkeyup="KeyUp"
         />
     <button type="button" class="input-group-text btn-primary"
         @onclick="SearchAsync">@ActionText</button>
@@ -21,8 +22,16 @@
 
     private string? valueToSearch;
 
+    private async Task KeyUp(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await SearchAsync();
+        }
+    }
+
     private async Task SearchAsync()
     {
-        await OnSearch.InvokeAsync(valueToSearch);
+        await OnSearch.InvokeAsync(this.valueToSearch);
     }
 }

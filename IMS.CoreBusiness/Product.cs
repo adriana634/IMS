@@ -16,7 +16,7 @@ namespace IMS.CoreBusiness
         [Product_EnsurePriceIsGreaterThanInventoriesPrice]
         public double Price { get; set; }
 
-        public List<ProductInventory> ProductInventories { get; set; } = default!;
+        public ICollection<ProductInventory> ProductInventories { get; set; } = default!;
 
         public double TotalInventoryCost()
         {

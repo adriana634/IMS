@@ -5,7 +5,7 @@
 
 <h3>Product List</h3>
 <br/>
-<ViewProductsComponent OnSearchProducts="OnSearchProducts"></ViewProductsComponent>
+<SearchComponent Placeholder="Type product name here to search" ActionText="View" OnSearch="OnSearchProductsAsync" />
 
 @if (products != null)
 {
@@ -21,7 +21,7 @@
         <tbody>
             @foreach(Product product in products)
             {
-                <ProductItemComponent Product="product"></ProductItemComponent>
+                <ProductItemComponent Product="product" />
             }
         </tbody>
     </table>
@@ -30,17 +30,16 @@
 <button type="button" class="btn btn-primary" @onclick="AddProduct">Add Product</button>
 
 @code {
-    private List<Product>? products;
+    private IEnumerable<Product>? products;
 
     protected override async Task OnInitializedAsync()
     {
-        IEnumerable<Product> products = await ViewProductsByNameUseCase.ExecuteAsync();
-        this.products = products.ToList();
+        this.products = await ViewProductsByNameUseCase.ExecuteAsync();
     }
 
-    private void OnSearchProducts(List<Product> products)
+    private async Task OnSearchProductsAsync(string searchParameter = "")
     {
-        this.products = products;
+        this.products = await ViewProductsByNameUseCase.ExecuteAsync(searchParameter);
     }
 
     private void AddProduct()

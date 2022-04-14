@@ -5,7 +5,7 @@
 
 <h3>Inventory List</h3>
 <br/>
-<ViewInventoriesComponent OnSearchInventories="OnSearchInventories"></ViewInventoriesComponent>
+<SearchComponent Placeholder="Type inventory name here to search" ActionText="View" OnSearch="OnSearchInventoryAsync" />
 
 @if (inventories != null)
 {
@@ -21,7 +21,7 @@
         <tbody>
             @foreach(Inventory inventory in inventories)
             {
-               <InventoryItemComponent Inventory="inventory"></InventoryItemComponent>
+               <InventoryItemComponent Inventory="inventory" />
             }
         </tbody>
     </table>
@@ -30,17 +30,16 @@
 <button type="button" class="btn btn-primary" @onclick="AddInventory">Add Inventory</button>
 
 @code {
-    private List<Inventory>? inventories;
+    private IEnumerable<Inventory>? inventories;
 
     protected override async Task OnInitializedAsync()
     {
-        IEnumerable<Inventory> inventories = await ViewInventoriesByNameUseCase.ExecuteAsync();
-        this.inventories = inventories.ToList();
+        this.inventories = await ViewInventoriesByNameUseCase.ExecuteAsync();
     }
 
-    private void OnSearchInventories(List<Inventory> inventories)
+    private async Task OnSearchInventoryAsync(string searchParameter = "")
     {
-        this.inventories = inventories;
+        this.inventories = await ViewInventoriesByNameUseCase.ExecuteAsync(searchParameter);
     }
 
     private void AddInventory()

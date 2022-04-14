@@ -13,10 +13,12 @@ namespace IMS.Plugins.EFCore
             this.db = db;
         }
 
-        public async Task<List<Product>> GetProductsByNameAsync(string name)
+        public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
         {
             return await this.db.Products
                 .Where(product => product.ProductName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
+                .Include(product => product.ProductInventories)
+                .ThenInclude(productInventory => productInventory.Inventory)
                 .ToListAsync();
         }
 

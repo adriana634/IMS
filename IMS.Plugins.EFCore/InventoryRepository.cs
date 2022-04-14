@@ -17,6 +17,7 @@ namespace IMS.Plugins.EFCore
         {
             return await this.db.Inventories
                 .Where(inventory => inventory.InventoryName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
+                .Include(product => product.ProductInventories)
                 .ToListAsync();
         }
 

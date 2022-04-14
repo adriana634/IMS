@@ -2,14 +2,10 @@
 
 <div class="form-group">
     <label>Inventories</label>
-    <SelectInventoryComponent 
-        Inventories="inventories"  
-        OnSearchInventory="OnSearchInventoryAsync" 
-        OnSelectInventory="OnSelectInventoryAsync">
-    </SelectInventoryComponent>
+    <SelectInventoryComponent OnSelectInventory="OnSelectInventoryAsync" />
 </div>
 
-@if (ProductInventories != null && ProductInventories.Count > 0)
+@if (ProductInventories != null && ProductInventories.Count() > 0)
 {
     <table class="table">
         <thead>
@@ -40,22 +36,13 @@
 
 @code {
     [Parameter]
-    public IReadOnlyCollection<ProductInventory>? ProductInventories { get; set; }
+    public IEnumerable<ProductInventory>? ProductInventories { get; set; }
 
     [Parameter]
-    public EventCallback<ProductInventory> OnAddProductInventory { get; set; }
+    public EventCallback<Inventory> OnAddProductInventory { get; set; }
 
     [Parameter]
     public EventCallback<ProductInventory> OnRemoveProductInventory { get; set; }
-
-    private List<Inventory>? inventories;
-
-    private async Task OnSearchInventoryAsync(string searchParameter)
-    {
-        List<Inventory>? inventories = (await ViewInventoriesByNameUseCase
-            .ExecuteAsync(searchParameter))?.ToList();
-        this.inventories = inventories;
-    }
 
     private async Task OnSelectInventoryAsync(Inventory inventory)
     {
@@ -63,13 +50,7 @@
         {
             if (this.ProductInventories.All((listInventory) => !listInventory.Inventory.InventoryName.Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase)))
             {
-                ProductInventory productInventory = new ProductInventory
-                {
-                    InventoryId = inventory.InventoryId,
-                    Inventory = inventory
-                };
-
-                await this.OnAddProductInventory.InvokeAsync(productInventory);
+                await this.OnAddProductInventory.InvokeAsync(inventory);
             }
         }
     }

@@ -6,7 +6,7 @@
 
         <div class="form-group">
             <label for="name">Product name</label>
-            <InputText id="name" @bind-Value="Product!.ProductName" class="form-control"></InputText>
+            <InputText id="name" @bind-Value="Product.ProductName" class="form-control"></InputText>
         </div>
 
         <div class="form-group">
@@ -33,33 +33,27 @@
 
 @code {
     [Parameter]
-    public Product? Product { get; set; }
+    public Product Product { get; set; } = new Product();
 
     [Parameter]
     public EventCallback<Product> OnValidSubmitAsync { get; set; }
 
-    protected override void OnInitialized()
+    private void OnAddProductInventory(Inventory inventory)
     {
-        if (this.Product == null)
+        ProductInventory productInventory = new ProductInventory
         {
-            this.Product = new Product();    
-        }
+            ProductId = this.Product.ProductId,
+            Product = this.Product,
+            InventoryId = inventory.InventoryId,
+            Inventory = inventory
+        };
 
-        if (this.Product.ProductInventories == null)
-        {
-            this.Product.ProductInventories = new List<ProductInventory>();
-            this.Product.ProductInventories.ForEach(productInventory => productInventory.ProductId = this.Product.ProductId);            
-        }
-    }
-
-    private void OnAddProductInventory(ProductInventory productInventory)
-    {
-        this.Product!.ProductInventories!.Add(productInventory);
+        this.Product.ProductInventories.Add(productInventory);
     }
 
     private void OnRemoveProductInventory(ProductInventory productInventory)
     {
-        this.Product!.ProductInventories!.Remove(productInventory);
+        this.Product.ProductInventories.Remove(productInventory);
     }
 
     private async Task ValidSubmitAsync()

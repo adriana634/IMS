@@ -4,6 +4,6 @@ namespace IMS.UseCases
 {
     public interface IViewProductsByNameUseCase
     {
-        Task<List<Product>> ExecuteAsync(string name = "");
+        Task<IEnumerable<Product>> ExecuteAsync(string name = "");
     }
 }

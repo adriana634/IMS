@@ -5,12 +5,12 @@ namespace IMS.Plugins.EFCore
 {
     public class IMSContext : DbContext
     {
+        public DbSet<Inventory> Inventories => Set<Inventory>();
+        public DbSet<Product> Products => Set<Product>();
+
         public IMSContext(DbContextOptions options) : base(options)
         {
         }
-
-        public DbSet<Inventory> Inventories { get; set; }
-        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
