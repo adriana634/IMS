@@ -1,0 +1,63 @@
+﻿@page "/purchase"
+
+@using IMS.WebApp.ViewModels
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+@inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
+
+<h3>Purchase Inventory</h3>
+<br/>
+
+<EditForm Model="purchaseViewModel" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="purchaseOrder">Purchase order</label>
+        <InputText id="purchaseOrder" @bind-Value="purchaseViewModel.PurchaseOrderNumber" class="form-control" />
+    </div>
+
+        <div class="form-group">
+        <label for="quantity">Inventory to Purchase</label>
+        <SelectInventoryComponent OnSelectInventory="OnSelectInventory" />
+        <InputText id="inventory" class="form-control" @bind-Value="purchaseViewModel.InventoryName" disabled="disabled" />
+        <input type="hidden" value="@selectedInventory?.InventoryId">
+        @if (selectedInventory != null)
+        {
+            <text>Price: </text>
+            @selectedInventory.Price.ToString("c")
+        }
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <InputNumber id="quantity" @bind-Value="purchaseViewModel.QuantityToPurchase" class="form-control" />
+    </div>
+
+    <br/>
+    <button type="submit" class="btn btn-primary">Purchase</button>
+</EditForm>
+
+@code {
+    private PurchaseViewModel purchaseViewModel = new PurchaseViewModel();
+    private Inventory? selectedInventory;
+
+    private void OnSelectInventory(Inventory inventory)
+    {
+        this.selectedInventory = inventory;
+        this.purchaseViewModel.InventoryId = inventory.InventoryId;
+        this.purchaseViewModel.InventoryName = inventory.InventoryName;
+    }
+
+    private void OnValidSubmit()
+    {
+        PurchaseInventoryUseCase.ExecuteAsync(
+            this.purchaseViewModel.PurchaseOrderNumber,
+            this.selectedInventory!,
+            this.purchaseViewModel.QuantityToPurchase,
+            "John Doe"
+        );
+
+        this.purchaseViewModel = new PurchaseViewModel();
+        this.selectedInventory = null;
+    }
+}

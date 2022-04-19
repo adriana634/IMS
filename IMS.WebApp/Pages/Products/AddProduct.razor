@@ -6,9 +6,20 @@
 <h3>Add Product</h3>
 <br/>
 
-<ProductFormComponent OnValidSubmitAsync="OnValidSubmitAsync" />
+@if (product != null && product.ProductInventories != null)
+{
+    <ProductFormComponent Product="product" OnValidSubmitAsync="OnValidSubmitAsync" />
+}
 
 @code {
+    private Product? product;
+
+    protected override void OnInitialized()
+    {
+        this.product = new Product();
+        this.product.ProductInventories = new List<ProductInventory>();
+    }
+
     private async Task OnValidSubmitAsync(Product product)
     {
         await AddProductUseCase.ExecuteAsync(product);

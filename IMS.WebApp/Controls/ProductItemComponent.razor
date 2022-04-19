@@ -1,21 +1,17 @@
 ﻿@inject NavigationManager NavigationManager
 
-@if (Product != null)
-{
-    <tr>
-        <td>@Product.ProductName</td>
-        <td>@Product.Quantity</td>
-        <td>@Product.Price.ToString("c")</td>
-        <td>
-            <button type="button" class="btn btn-primary" @onclick="() => EditProduct(Product.ProductId)">Edit</button>
-        </td>
-    </tr>    
-}
-
+ <tr>
+    <td>@Product.ProductName</td>
+    <td>@Product.Quantity</td>
+    <td>@Product.Price.ToString("c")</td>
+    <td>
+        <button type="button" class="btn btn-primary" @onclick="() => EditProduct(Product.ProductId)">Edit</button>
+    </td>
+</tr>   
 
 @code {
     [Parameter]
-    public Product? Product { get; set; }
+    public Product Product { get; set; } = default!;
 
     private void EditProduct(int productId)
     {

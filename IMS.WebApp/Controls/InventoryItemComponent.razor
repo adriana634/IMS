@@ -1,20 +1,17 @@
 ﻿@inject NavigationManager NavigationManager
 
-@if (Inventory != null)
-{
-    <tr>
-        <td>@Inventory.InventoryName</td>
-        <td>@Inventory.Quantity</td>
-        <td>@Inventory.Price.ToString("c")</td>
-        <td>
-            <button type="button" class="btn btn-primary" @onclick="() => EditInventory(Inventory.InventoryId)">Edit</button>
-        </td>
-    </tr>    
-}
+<tr>
+    <td>@Inventory.InventoryName</td>
+    <td>@Inventory.Quantity</td>
+    <td>@Inventory.Price.ToString("c")</td>
+    <td>
+        <button type="button" class="btn btn-primary" @onclick="() => EditInventory(Inventory.InventoryId)">Edit</button>
+    </td>
+</tr>
 
 @code {
     [Parameter]
-    public Inventory? Inventory { get; set; }
+    public Inventory Inventory { get; set; } = default!;
 
     private void EditInventory(int inventoryId)
     {

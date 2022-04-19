@@ -1,22 +1,21 @@
 ﻿using IMS.CoreBusiness;
 using IMS.UseCases.PluginInterfaces;
 
-namespace IMS.UseCases
+namespace IMS.UseCases;
+
+public class AddInventoryUseCase : IAddInventoryUseCase
 {
-    public class AddInventoryUseCase : IAddInventoryUseCase
+    private readonly IInventoryRepository inventoryRepository;
+
+    public AddInventoryUseCase(IInventoryRepository inventoryRepository)
     {
-        private readonly IInventoryRepository inventoryRepository;
+        this.inventoryRepository = inventoryRepository;
+    }
 
-        public AddInventoryUseCase(IInventoryRepository inventoryRepository)
-        {
-            this.inventoryRepository = inventoryRepository;
-        }
+    public async Task ExecuteAsync(Inventory inventory)
+    {
+        if (inventory == null) return;
 
-        public async Task ExecuteAsync(Inventory inventory)
-        {
-            if (inventory == null) return;
-
-            await inventoryRepository.AddInventoryAsync(inventory);
-        }
+        await inventoryRepository.AddInventoryAsync(inventory);
     }
 }
