@@ -3,7 +3,7 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.Plugins.EFCore;
 
-internal class ProductTransactionRepository : IProductTransactionRepository
+public class ProductTransactionRepository : IProductTransactionRepository
 {
     private readonly IMSContext db;
 

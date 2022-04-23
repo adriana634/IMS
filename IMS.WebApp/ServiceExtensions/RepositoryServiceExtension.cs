@@ -10,8 +10,9 @@ internal static class RepositoryServiceExtension
         services
             .AddTransient<IInventoryRepository, InventoryRepository>()
             .AddTransient<IProductRepository, ProductRepository>()
-            .AddTransient<IInventoryTransactionRepository, InventoryTransactionRepository>();
-        
+            .AddTransient<IInventoryTransactionRepository, InventoryTransactionRepository>()
+            .AddTransient<IProductTransactionRepository, ProductTransactionRepository>();
+
         return services;
     } 
 }
