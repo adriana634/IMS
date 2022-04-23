@@ -19,21 +19,29 @@ public class Product
 
     public ICollection<ProductInventory> ProductInventories { get; set; } = default!;
 
-    public double TotalInventoryCost()
-    {
-        double totalInventoryCost = this.ProductInventories
-            .Sum(ProductInventory => ProductInventory.Inventory.Price * ProductInventory.InventoryQuantity);
-
-        return totalInventoryCost;
-    }
+    public double TotalInventoryCost => this.ProductInventories
+                                        .Sum(ProductInventory => ProductInventory.Inventory.Price * ProductInventory.InventoryQuantity);
 
     public bool ValidatePricing()
     {
         if (ProductInventories.Count == 0) return true;
+        if (this.TotalInventoryCost > this.Price) return false;
+        return true;
+    }
 
-        double totalInventoryCost = this.TotalInventoryCost();
-        if (totalInventoryCost > this.Price) return false;
+    public bool ValidateEnoughInventoriesForProducing(int quantity)
+    {
+        if (this.ProductInventories.Any(productInventory => productInventory.InventoryQuantity * quantity > productInventory.Inventory.Quantity))
+            return false;
 
         return true;
+    }
+
+    public void TakeAwayInventories(int quantity)
+    {
+        foreach (ProductInventory productInventory in this.ProductInventories)
+        {
+            productInventory.Inventory.Quantity -= quantity * productInventory.InventoryQuantity;
+        }
     }
 }

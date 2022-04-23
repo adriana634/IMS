@@ -8,6 +8,7 @@ public class IMSContext : DbContext
     public DbSet<Inventory> Inventories => Set<Inventory>();
     public DbSet<Product> Products => Set<Product>();
     public DbSet<InventoryTransaction> InventoryTransactions => Set<InventoryTransaction>();
+    public DbSet<ProductTransaction> ProductTransactions => Set<ProductTransaction>();
 
     public IMSContext(DbContextOptions options) : base(options)
     {

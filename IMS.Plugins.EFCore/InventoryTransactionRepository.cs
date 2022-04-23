@@ -23,11 +23,11 @@ public class InventoryTransactionRepository : IInventoryTransactionRepository
             PurchaseOrderNumber = purchaseOrderNumber,
             InventoryId = inventoryId,
             QuantityBefore = inventoryQuantity,
-            InventoryType = InventoryTransactionType.PurchaseInventory,
+            ActivityType = InventoryTransactionType.PurchaseInventory,
             QuantityAfter = inventoryQuantity + purchaseQuantity,
             TransactionDate = DateTime.Now,
             DoneBy = doneBy,
-            Cost = inventoryPrice * purchaseQuantity
+            UnitPrice = inventoryPrice
         };
 
         this.db.InventoryTransactions.Add(inventoryTransaction);
