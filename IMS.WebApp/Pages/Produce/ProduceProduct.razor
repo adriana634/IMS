@@ -1,0 +1,74 @@
+﻿@page "/produce"
+@using IMS.WebApp.ViewModels
+
+@inject IProduceProductUseCase ProduceProductUseCase
+
+<ErrorMessageComponent ErrorMessage="@errorMessage" />
+<h3>Produce Product</h3>
+<br />
+
+<EditForm Model="produceViewModel" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="purchaseOrder">Production Number</label>
+        <InputText id="purchaseOrder" @bind-Value="produceViewModel.ProductionNumber" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Product to Produce</label>
+        <SelectProductComponent OnSelectProduct="OnSelectProduct" />
+        <InputText id="inventory" class="form-control" @bind-Value="produceViewModel.ProductName" disabled="disabled" />
+        <input type="hidden" value="@selectedProduct?.ProductId">
+        @if (selectedProduct != null)
+        {
+            <text>Price: </text>
+            @selectedProduct.Price.ToString("c")
+        }
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <InputNumber id="quantity" @bind-Value="produceViewModel.QuantityToProduce" class="form-control" />
+    </div>
+
+    <br/>
+    <button type="submit" class="btn btn-primary">Produce</button>
+</EditForm>
+
+@code {
+    private ProduceViewModel produceViewModel = new ProduceViewModel();
+    private Product? selectedProduct;
+    private string? errorMessage;
+
+    private async Task OnValidSubmit()
+    {
+        if (this.selectedProduct.ValidateEnoughInventoriesForProducing(this.produceViewModel.QuantityToProduce) == false) 
+        {
+            this.errorMessage = $"The inventories are not enough for producing { this.selectedProduct.ProductName } X { this.produceViewModel.QuantityToProduce } times";
+            return;
+        }
+        else
+        {
+            this.errorMessage = null;
+        }
+
+        await ProduceProductUseCase.ExecuteAync(
+            this.produceViewModel.ProductionNumber,
+            this.selectedProduct!,
+            this.produceViewModel.QuantityToProduce,
+            "John Doe"
+        );
+
+        this.produceViewModel = new ProduceViewModel();
+        this.selectedProduct = null;
+    }
+
+    private void OnSelectProduct(Product product)
+    {
+        this.selectedProduct = product;
+        this.produceViewModel.ProductId = product.ProductId;
+        this.produceViewModel.ProductName = product.ProductName;
+    }
+}

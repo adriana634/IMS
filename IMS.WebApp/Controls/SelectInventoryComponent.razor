@@ -22,9 +22,6 @@
 
 @code {
     [Parameter]
-    public EventCallback<string> OnSearchInventory { get; set; }
-
-    [Parameter]
     public EventCallback<Inventory> OnSelectInventory { get; set; }
 
     private IEnumerable<Inventory>? inventories;

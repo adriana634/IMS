@@ -22,9 +22,9 @@ public class ProduceProductUseCase : IProduceProductUseCase
         this.productTransactionRepository = productTransactionRepository;
     }
 
-    public async Task ExecuteAync(string productionNumber, Product product, int quantity, double price, string doneBy)
+    public async Task ExecuteAync(string productionNumber, Product product, int quantity, string doneBy)
     {
-        await this.productTransactionRepository.ProduceAsync(productionNumber, product, quantity, price, doneBy);
+        await this.productTransactionRepository.ProduceAsync(productionNumber, product, quantity, doneBy);
 
         product.Quantity += quantity;
         await this.productRepository.UpdateProductAsync(product);

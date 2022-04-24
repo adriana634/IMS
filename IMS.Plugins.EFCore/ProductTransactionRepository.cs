@@ -12,7 +12,7 @@ public class ProductTransactionRepository : IProductTransactionRepository
         this.db = db;
     }
 
-    public async Task ProduceAsync(string productionNumber, Product product, int quantity, double price, string doneBy)
+    public async Task ProduceAsync(string productionNumber, Product product, int quantity, string doneBy)
     {
         product.TakeAwayInventories(quantity);
 
@@ -25,7 +25,7 @@ public class ProductTransactionRepository : IProductTransactionRepository
             QuantityAfter = product.Quantity + quantity,
             TransactionDate = DateTime.Now,
             DoneBy = doneBy,
-            UnitPrice = price
+            UnitPrice = product.Price
         };
 
         this.db.ProductTransactions.Add(productTransaction);

@@ -1,0 +1,49 @@
+﻿@using IMS.CoreBusiness
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase
+
+<SearchComponent Placeholder="Type product name here to search" ActionText="View" OnSearch="OnSearchProductAsync" />
+
+@if (products != null)
+{
+    <div class="product-list-container">
+        <ul class="product-list">
+            @foreach (Product product in products)
+            {
+                <li 
+                    class="product-list__item" 
+                    @onclick="() => SelectProductAsync(product)"
+                    @key="product.ProductId">
+                        @product.ProductName
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public EventCallback<Product> OnSelectProduct { get; set; }
+
+    private IEnumerable<Product>? products;
+
+    private async Task OnSearchProductAsync(string searchParameter = "")
+    {
+        this.products = await ViewProductsByNameUseCase.ExecuteAsync(searchParameter);
+    }
+
+    private async Task SelectProductAsync(Product product)
+    {
+        this.products = null;
+        await OnSelectProduct.InvokeAsync(product);
+    }
+}
+
+<style>
+    .product-list-container {
+        overflow-y: auto;
+        max-height: 300px;
+    }
+    .product-list__item {
+        cursor: pointer;
+    }
+</style>
