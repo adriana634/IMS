@@ -5,10 +5,10 @@ namespace IMS.Plugins.EFCore;
 
 public class IMSContext : DbContext
 {
-    public DbSet<Inventory> Inventories => Set<Inventory>();
-    public DbSet<Product> Products => Set<Product>();
-    public DbSet<InventoryTransaction> InventoryTransactions => Set<InventoryTransaction>();
-    public DbSet<ProductTransaction> ProductTransactions => Set<ProductTransaction>();
+    public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
+    public DbSet<ProductTransaction> ProductTransactions { get; set; }
 
     public IMSContext(DbContextOptions options) : base(options)
     {

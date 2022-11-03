@@ -15,7 +15,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
     {
-        return await this.db.Products
+        return await db.Products
             .Where(product => product.ProductName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
             .Include(product => product.ProductInventories)
             .ThenInclude(productInventory => productInventory.Inventory)
@@ -25,11 +25,11 @@ public class ProductRepository : IProductRepository
     public async Task AddProductAsync(Product product)
     {
         //To prevent different products from having the same name
-        if (this.db.Products.Any(dbProduct => dbProduct.ProductName.IgnoreCaseEquals(product.ProductName)))
+        if (db.Products.Any(dbProduct => dbProduct.ProductName.IgnoreCaseEquals(product.ProductName)))
             return;
 
-        this.db.Products.Add(product);
-        await this.db.SaveChangesAsync();
+        db.Products.Add(product);
+        await db.SaveChangesAsync();
     }
 
     public async Task UpdateProductAsync(Product product)
@@ -39,7 +39,7 @@ public class ProductRepository : IProductRepository
                                             && dbProduct.ProductName.IgnoreCaseEquals(product.ProductName)))
             return;
 
-        Product? dbProduct = await this.db.Products.FindAsync(product.ProductId);
+        var dbProduct = await db.Products.FindAsync(product.ProductId);
 
         if (dbProduct != null)
         {
@@ -48,13 +48,13 @@ public class ProductRepository : IProductRepository
             dbProduct.Quantity = product.Quantity;
             dbProduct.ProductInventories = product.ProductInventories;
 
-            await this.db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
     }
 
     public async Task<Product?> GetProductByIdAsync(int productId)
     {
-        return await this.db.Products
+        return await db.Products
             .Include(product => product.ProductInventories)
             .ThenInclude(productInventory => productInventory.Inventory)
             .FirstAsync(product => product.ProductId == productId);

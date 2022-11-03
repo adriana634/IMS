@@ -5,13 +5,13 @@ namespace IMS.WebApp.ViewModels;
 public class ProduceViewModel
 {
     [Required]
-    public string ProductionNumber { get; set; } = default!;
+    public string ProductionNumber { get; set; }
 
     [Required]
     public int ProductId { get; set; }
 
     [Required]
-    public string ProductName { get; set; } = default!;
+    public string ProductName { get; set; }
 
     [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to 1")]
     public int QuantityToProduce { get; set; }

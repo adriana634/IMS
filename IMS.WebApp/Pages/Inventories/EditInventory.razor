@@ -41,12 +41,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.inventory = await ViewInventoryByIdUseCase.ExecuteAsync(this.InventoryId);
+        inventory = await ViewInventoryByIdUseCase.ExecuteAsync(InventoryId);
     }
 
     public async Task OnValidSubmitAsync()
     {
-        await EditInventoryUseCase.ExecuteAsync(this.inventory!);
+        await EditInventoryUseCase.ExecuteAsync(inventory!);
         NavigationManager.NavigateTo("/inventories");
     }
 }

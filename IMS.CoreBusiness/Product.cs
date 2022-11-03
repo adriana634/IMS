@@ -8,7 +8,7 @@ public class Product
     public int ProductId { get; set; }
 
     [Required]
-    public string ProductName { get; set; } = default!;
+    public string ProductName { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to 0")]
     public int Quantity { get; set; }
@@ -17,21 +17,21 @@ public class Product
     [Product_EnsurePriceIsGreaterThanInventoriesPrice]
     public double Price { get; set; }
 
-    public ICollection<ProductInventory> ProductInventories { get; set; } = default!;
+    public ICollection<ProductInventory> ProductInventories { get; set; }
 
-    public double TotalInventoryCost => this.ProductInventories
+    public double TotalInventoryCost => ProductInventories
                                         .Sum(ProductInventory => ProductInventory.Inventory.Price * ProductInventory.InventoryQuantity);
 
     public bool ValidatePricing()
     {
         if (ProductInventories.Count == 0) return true;
-        if (this.TotalInventoryCost > this.Price) return false;
+        if (TotalInventoryCost > Price) return false;
         return true;
     }
 
     public bool ValidateEnoughInventoriesForProducing(int quantity)
     {
-        if (this.ProductInventories.Any(productInventory => productInventory.InventoryQuantity * quantity > productInventory.Inventory.Quantity))
+        if (ProductInventories.Any(productInventory => productInventory.InventoryQuantity * quantity > productInventory.Inventory.Quantity))
             return false;
 
         return true;
@@ -39,7 +39,7 @@ public class Product
 
     public void TakeAwayInventories(int quantity)
     {
-        foreach (ProductInventory productInventory in this.ProductInventories)
+        foreach (var productInventory in ProductInventories)
         {
             productInventory.Inventory.Quantity -= quantity * productInventory.InventoryQuantity;
         }

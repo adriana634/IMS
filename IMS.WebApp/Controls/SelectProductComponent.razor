@@ -28,12 +28,12 @@
 
     private async Task OnSearchProductAsync(string searchParameter = "")
     {
-        this.products = await ViewProductsByNameUseCase.ExecuteAsync(searchParameter);
+        products = await ViewProductsByNameUseCase.ExecuteAsync(searchParameter);
     }
 
     private async Task SelectProductAsync(Product product)
     {
-        this.products = null;
+        products = null;
         await OnSelectProduct.InvokeAsync(product);
     }
 }

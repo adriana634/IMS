@@ -14,6 +14,6 @@ public class ViewProductsUseCase : IViewProductsByNameUseCase
 
     public async Task<IEnumerable<Product>> ExecuteAsync(string name = "")
     {
-        return await this.productRepository.GetProductsByNameAsync(name);
+        return await productRepository.GetProductsByNameAsync(name);
     }
 }

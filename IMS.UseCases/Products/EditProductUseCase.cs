@@ -16,6 +16,6 @@ public class EditProductUseCase : IEditProductUseCase
     {
         if (product == null) return;
 
-        await this.productRepository.UpdateProductAsync(product);
+        await productRepository.UpdateProductAsync(product);
     }
 }

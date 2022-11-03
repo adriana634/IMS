@@ -19,7 +19,7 @@ public class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
                                    int quantity,
                                    string doneBy)
     {
-        await this.inventoryTransactionRepository.PurchaseAsync(
+        await inventoryTransactionRepository.PurchaseAsync(
             purchaseOrderNumber,
             inventory.InventoryId,
             inventory.Quantity,
@@ -28,6 +28,6 @@ public class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
             doneBy);
 
         inventory.Quantity += quantity;
-        await this.inventoryRepository.UpdateInventoryAsync(inventory);
+        await inventoryRepository.UpdateInventoryAsync(inventory);
     }
 }

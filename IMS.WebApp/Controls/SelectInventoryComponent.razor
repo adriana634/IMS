@@ -7,7 +7,7 @@
 {
     <div class="inventory-list-container">
         <ul class="inventory-list">
-            @foreach (Inventory inventory in inventories)
+            @foreach (var inventory in inventories)
             {
                 <li 
                     class="inventory-list__item" 
@@ -28,12 +28,12 @@
 
     private async Task OnSearchInventoryAsync(string searchParameter = "")
     {
-        this.inventories = await ViewInventoriesByNameUseCase.ExecuteAsync(searchParameter);
+        inventories = await ViewInventoriesByNameUseCase.ExecuteAsync(searchParameter);
     }
 
     private async Task SelectInventoryAsync(Inventory inventory)
     {
-        this.inventories = null;
+        inventories = null;
         await OnSelectInventory.InvokeAsync(inventory);
     }
 }

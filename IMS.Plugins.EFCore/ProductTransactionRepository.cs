@@ -16,7 +16,7 @@ public class ProductTransactionRepository : IProductTransactionRepository
     {
         product.TakeAwayInventories(quantity);
 
-        ProductTransaction productTransaction = new ProductTransaction 
+        var productTransaction = new ProductTransaction 
         {
             ProductionNumber = productionNumber,
             ProductId = product.ProductId,
@@ -28,7 +28,7 @@ public class ProductTransactionRepository : IProductTransactionRepository
             UnitPrice = product.Price
         };
 
-        this.db.ProductTransactions.Add(productTransaction);
-        await this.db.SaveChangesAsync();
+        db.ProductTransactions.Add(productTransaction);
+        await db.SaveChangesAsync();
     }
 }

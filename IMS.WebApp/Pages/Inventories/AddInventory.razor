@@ -37,14 +37,14 @@
 
     protected override void OnInitialized()
     {
-        this.inventory = new Inventory();
+        inventory = new Inventory();
     }
 
     private async Task OnValidSubmitAsync()
     {
-        if (this.inventory != null)
+        if (inventory != null)
         {
-            await AddInventoryUseCase.ExecuteAsync(this.inventory);    
+            await AddInventoryUseCase.ExecuteAsync(inventory);    
             NavigationManager.NavigateTo("/inventories");
         }
     }

@@ -43,21 +43,21 @@
 
     private void OnSelectInventory(Inventory inventory)
     {
-        this.selectedInventory = inventory;
-        this.purchaseViewModel.InventoryId = inventory.InventoryId;
-        this.purchaseViewModel.InventoryName = inventory.InventoryName;
+        selectedInventory = inventory;
+        purchaseViewModel.InventoryId = inventory.InventoryId;
+        purchaseViewModel.InventoryName = inventory.InventoryName;
     }
 
     private void OnValidSubmit()
     {
         PurchaseInventoryUseCase.ExecuteAsync(
-            this.purchaseViewModel.PurchaseOrderNumber,
-            this.selectedInventory!,
-            this.purchaseViewModel.QuantityToPurchase,
+            purchaseViewModel.PurchaseOrderNumber,
+            selectedInventory!,
+            purchaseViewModel.QuantityToPurchase,
             "John Doe"
         );
 
-        this.purchaseViewModel = new PurchaseViewModel();
-        this.selectedInventory = null;
+        purchaseViewModel = new PurchaseViewModel();
+        selectedInventory = null;
     }
 }

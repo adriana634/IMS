@@ -6,15 +6,14 @@ internal class Product_EnsurePriceIsGreaterThanInventoriesPrice : ValidationAttr
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        Product? product = validationContext.ObjectInstance as Product;
-        if (product != null)
+        if (validationContext.ObjectInstance is Product product)
         {
             bool isPricingValid = product.ValidatePricing();
             if (isPricingValid == false)
             {
-                string[] memberNames = new string[] { validationContext.MemberName! };
+                var memberNames = new string[] { validationContext.MemberName };
                 return new ValidationResult(
-                    $"The product's price is less than the summary of its inventories' price: { product.TotalInventoryCost }",
+                    $"The product's price is less than the summary of its inventories' price: {product.TotalInventoryCost}",
                     memberNames);
             }
         }

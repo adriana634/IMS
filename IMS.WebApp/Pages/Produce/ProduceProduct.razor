@@ -44,31 +44,31 @@
 
     private async Task OnValidSubmit()
     {
-        if (this.selectedProduct.ValidateEnoughInventoriesForProducing(this.produceViewModel.QuantityToProduce) == false) 
+        if (selectedProduct!.ValidateEnoughInventoriesForProducing(produceViewModel.QuantityToProduce) == false) 
         {
-            this.errorMessage = $"The inventories are not enough for producing { this.selectedProduct.ProductName } X { this.produceViewModel.QuantityToProduce } times";
+            errorMessage = $"The inventories are not enough for producing { selectedProduct.ProductName } X { produceViewModel.QuantityToProduce } times";
             return;
         }
         else
         {
-            this.errorMessage = null;
+            errorMessage = null;
         }
 
         await ProduceProductUseCase.ExecuteAync(
-            this.produceViewModel.ProductionNumber,
-            this.selectedProduct!,
-            this.produceViewModel.QuantityToProduce,
+            produceViewModel.ProductionNumber,
+            selectedProduct!,
+            produceViewModel.QuantityToProduce,
             "John Doe"
         );
 
-        this.produceViewModel = new ProduceViewModel();
-        this.selectedProduct = null;
+        produceViewModel = new ProduceViewModel();
+        selectedProduct = null;
     }
 
     private void OnSelectProduct(Product product)
     {
-        this.selectedProduct = product;
-        this.produceViewModel.ProductId = product.ProductId;
-        this.produceViewModel.ProductName = product.ProductName;
+        selectedProduct = product;
+        produceViewModel.ProductId = product.ProductId;
+        produceViewModel.ProductName = product.ProductName;
     }
 }

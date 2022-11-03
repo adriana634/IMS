@@ -16,6 +16,6 @@ public class EditInventoryUseCase : IEditInventoryUseCase
     {
         if (inventory == null) return;
 
-        await this.inventoryRepository.UpdateInventoryAsync(inventory);
+        await inventoryRepository.UpdateInventoryAsync(inventory);
     }
 }

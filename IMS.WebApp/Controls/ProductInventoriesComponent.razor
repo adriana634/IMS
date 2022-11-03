@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(ProductInventory productInventory in ProductInventories)
+            @foreach(var productInventory in ProductInventories)
             {
                 <tr>
                     <td>
@@ -36,7 +36,7 @@
 
 @code {
     [Parameter]
-    public IEnumerable<ProductInventory> ProductInventories { get; set; } = default!;
+    public IEnumerable<ProductInventory> ProductInventories { get; set; }
 
     [Parameter]
     public EventCallback<Inventory> OnAddProductInventory { get; set; }
@@ -46,10 +46,10 @@
 
     private async Task OnSelectInventoryAsync(Inventory inventory)
     {
-        if (this.ProductInventories.All(listInventory => listInventory
-                                                        .Inventory
-                                                        .InventoryName
-                                                        .Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase) == false))
+        if (ProductInventories.All(listInventory => listInventory
+                                                    .Inventory
+                                                    .InventoryName
+                                                    .Equals(inventory.InventoryName, StringComparison.CurrentCultureIgnoreCase) == false))
         {
             await this.OnAddProductInventory.InvokeAsync(inventory);
         }
@@ -57,6 +57,6 @@
 
     private async Task RemoveInventoryAsync(ProductInventory productInventory)
     {
-        await this.OnRemoveProductInventory.InvokeAsync(productInventory);
+        await OnRemoveProductInventory.InvokeAsync(productInventory);
     }
 }

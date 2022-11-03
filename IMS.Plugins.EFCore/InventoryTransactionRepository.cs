@@ -19,7 +19,7 @@ public class InventoryTransactionRepository : IInventoryTransactionRepository
                                     double inventoryPrice,
                                     string doneBy)
     {
-        InventoryTransaction inventoryTransaction = new InventoryTransaction {
+        var inventoryTransaction = new InventoryTransaction {
             PurchaseOrderNumber = purchaseOrderNumber,
             InventoryId = inventoryId,
             QuantityBefore = inventoryQuantity,
@@ -30,7 +30,7 @@ public class InventoryTransactionRepository : IInventoryTransactionRepository
             UnitPrice = inventoryPrice
         };
 
-        this.db.InventoryTransactions.Add(inventoryTransaction);
-        await this.db.SaveChangesAsync();
+        db.InventoryTransactions.Add(inventoryTransaction);
+        await db.SaveChangesAsync();
     }
 }

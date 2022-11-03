@@ -13,6 +13,6 @@ public class ViewProductByIdUseCase : IViewProductByIdUseCase
     }
     public async Task<Product?> ExecuteAsync(int productId)
     {
-        return await this.productRepository.GetProductByIdAsync(productId);
+        return await productRepository.GetProductByIdAsync(productId);
     }
 }

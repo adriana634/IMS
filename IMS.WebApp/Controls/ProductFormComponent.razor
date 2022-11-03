@@ -29,7 +29,7 @@
 
 @code {
     [Parameter]
-    public Product Product { get; set; } = default!;
+    public Product Product { get; set; }
 
     [Parameter]
     public EventCallback<Product> OnValidSubmitAsync { get; set; }
@@ -38,22 +38,22 @@
     {
         ProductInventory productInventory = new ProductInventory
         {
-            ProductId = this.Product.ProductId,
-            Product = this.Product,
+            ProductId = Product.ProductId,
+            Product = Product,
             InventoryId = inventory.InventoryId,
             Inventory = inventory
         };
 
-        this.Product.ProductInventories.Add(productInventory);
+        Product.ProductInventories.Add(productInventory);
     }
 
     private void OnRemoveProductInventory(ProductInventory productInventory)
     {
-        this.Product.ProductInventories.Remove(productInventory);
+        Product.ProductInventories.Remove(productInventory);
     }
 
     private async Task ValidSubmitAsync()
     {
-        await OnValidSubmitAsync.InvokeAsync(this.Product);
+        await OnValidSubmitAsync.InvokeAsync(Product);
     }
 }

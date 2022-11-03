@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(Product product in products)
+            @foreach(var product in products)
             {
                 <ProductItemComponent Product="product" />
             }
@@ -34,12 +34,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.products = await ViewProductsByNameUseCase.ExecuteAsync();
+        products = await ViewProductsByNameUseCase.ExecuteAsync();
     }
 
     private async Task OnSearchProductsAsync(string searchParameter = "")
     {
-        this.products = await ViewProductsByNameUseCase.ExecuteAsync(searchParameter);
+        products = await ViewProductsByNameUseCase.ExecuteAsync(searchParameter);
     }
 
     private void AddProduct()

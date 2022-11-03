@@ -19,7 +19,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        this.product = await ViewProductByIdUseCase.ExecuteAsync(this.ProductId);
+        product = await ViewProductByIdUseCase.ExecuteAsync(this.ProductId);
     }
 
     private async Task OnValidSubmitAsync(Product product)

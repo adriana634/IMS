@@ -1,7 +1,7 @@
 using IMS.Plugins.EFCore;
 using IMS.WebApp.ServiceExtensions;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
@@ -9,10 +9,10 @@ builder.Services
     .AddRepositoryServices()
     .AddUseCaseServices();
 
-WebApplication app = builder.Build();
+var app = builder.Build();
 
-IServiceScope scope = app.Services.CreateScope();
-IMSContext imsContext = scope.ServiceProvider.GetRequiredService<IMSContext>();
+var scope = app.Services.CreateScope();
+var imsContext = scope.ServiceProvider.GetRequiredService<IMSContext>();
 imsContext.Database.EnsureDeleted();
 imsContext.Database.EnsureCreated();
 

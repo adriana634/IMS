@@ -15,7 +15,7 @@ public class InventoryRepository : IInventoryRepository
 
     public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
     {
-        return await this.db.Inventories
+        return await db.Inventories
             .Where(inventory => inventory.InventoryName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
             .Include(product => product.ProductInventories)
             .ToListAsync();
@@ -24,11 +24,11 @@ public class InventoryRepository : IInventoryRepository
     public async Task AddInventoryAsync(Inventory inventory)
     {
         //To prevent different inventories from having the same name
-        if (this.db.Inventories.Any(dbInventory => dbInventory.InventoryName.IgnoreCaseEquals(inventory.InventoryName)))
+        if (db.Inventories.Any(dbInventory => dbInventory.InventoryName.IgnoreCaseEquals(inventory.InventoryName)))
             return;
 
-        await this.db.Inventories.AddAsync(inventory);
-        await this.db.SaveChangesAsync();
+        await db.Inventories.AddAsync(inventory);
+        await db.SaveChangesAsync();
     }
 
     public async Task UpdateInventoryAsync(Inventory inventory)
@@ -38,7 +38,7 @@ public class InventoryRepository : IInventoryRepository
                                             && dbInventory.InventoryName.IgnoreCaseEquals(inventory.InventoryName)))
             return;
 
-        Inventory? dbInventory = await this.db.Inventories.FindAsync(inventory.InventoryId);
+        var dbInventory = await db.Inventories.FindAsync(inventory.InventoryId);
         
         if (dbInventory != null)
         {
@@ -46,12 +46,12 @@ public class InventoryRepository : IInventoryRepository
             dbInventory.Price = inventory.Price;
             dbInventory.Quantity = inventory.Quantity;
 
-            await this.db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
     }
 
     public async Task<Inventory?> GetInventoryByIdAsync(int inventoryId)
     {
-        return await this.db.Inventories.FindAsync(inventoryId);
+        return await db.Inventories.FindAsync(inventoryId);
     }
 }

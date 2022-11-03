@@ -27,7 +27,7 @@ public class InventoryTransaction
     public DateTime TransactionDate { get; set; }
 
     [Required]
-    public string DoneBy { get; set; } = default!;
+    public string DoneBy { get; set; }
 
-    public Inventory Inventory { get; set; } = default!;
+    public Inventory Inventory { get; set; }
 }

@@ -16,6 +16,6 @@ public class AddProductUseCase : IAddProductUseCase
     {
         if (product == null) return;
 
-        await this.productRepository.AddProductAsync(product);
+        await productRepository.AddProductAsync(product);
     }
 }
