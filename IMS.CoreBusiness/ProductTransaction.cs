@@ -2,7 +2,7 @@
 
 namespace IMS.CoreBusiness;
 
-public class ProductTransaction 
+public sealed class ProductTransaction 
 {
     public int ProductTransactionId { get; set; }
 

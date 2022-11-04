@@ -2,7 +2,7 @@
 
 namespace IMS.WebApp.ViewModels;
 
-public class ProduceViewModel
+public sealed class ProduceViewModel
 {
     [Required]
     public string ProductionNumber { get; set; }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IMS.Plugins.EFCore;
 
-public class ProductRepository : IProductRepository
+public sealed class ProductRepository : IProductRepository
 {
     private readonly IMSContext db;
 

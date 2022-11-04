@@ -2,7 +2,7 @@
 
 namespace IMS.CoreBusiness;
 
-public class Inventory
+public sealed class Inventory
 {
     public int InventoryId { get; set; }
 

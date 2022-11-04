@@ -2,7 +2,7 @@
 
 namespace IMS.WebApp.ViewModels;
 
-public class PurchaseViewModel
+public sealed class PurchaseViewModel
 {
     [Required]
     public string PurchaseOrderNumber { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IMS.Plugins.EFCore;
 
-public class IMSContext : DbContext
+public sealed class IMSContext : DbContext
 {
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Product> Products { get; set; }

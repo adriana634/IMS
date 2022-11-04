@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace IMS.WebApp.Areas.Identity
 {
-    public class RevalidatingIdentityAuthenticationStateProvider<TUser>
+    public sealed class RevalidatingIdentityAuthenticationStateProvider<TUser>
         : RevalidatingServerAuthenticationStateProvider where TUser : class
     {
         private readonly IServiceScopeFactory _scopeFactory;

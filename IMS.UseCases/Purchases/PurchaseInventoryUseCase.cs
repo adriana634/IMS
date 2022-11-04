@@ -3,7 +3,7 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.UseCases;
 
-public class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
+public sealed class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
 {
     private readonly IInventoryTransactionRepository inventoryTransactionRepository;
     private readonly IInventoryRepository inventoryRepository;

@@ -3,7 +3,7 @@ using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.UseCases;
 
-public class ViewInventoriesByNameUseCase : IViewInventoriesByNameUseCase
+public sealed class ViewInventoriesByNameUseCase : IViewInventoriesByNameUseCase
 {
     private readonly IInventoryRepository inventoryRepository;
 

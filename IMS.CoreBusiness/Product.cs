@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IMS.CoreBusiness;
 
-public class Product
+public sealed class Product
 {
     public int ProductId { get; set; }
 

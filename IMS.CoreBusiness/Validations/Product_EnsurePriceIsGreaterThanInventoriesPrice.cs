@@ -2,7 +2,7 @@
 
 namespace IMS.CoreBusiness.Validations;
 
-internal class Product_EnsurePriceIsGreaterThanInventoriesPrice : ValidationAttribute
+internal sealed class Product_EnsurePriceIsGreaterThanInventoriesPrice : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {

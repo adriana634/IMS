@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IMS.Plugins.EFCore;
 
-public class InventoryRepository : IInventoryRepository
+public sealed class InventoryRepository : IInventoryRepository
 {
     private readonly IMSContext db;
 
