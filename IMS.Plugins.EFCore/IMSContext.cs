@@ -16,7 +16,7 @@ public class IMSContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //Build relationships
+        // Build relationships
         modelBuilder.Entity<ProductInventory>()
             .HasKey(productInventory => new { productInventory.ProductId, productInventory.InventoryId });
 
@@ -30,7 +30,7 @@ public class IMSContext : DbContext
             .WithMany(inventory => inventory.ProductInventories)
             .HasForeignKey(productInventory => productInventory.InventoryId);
 
-        //Seeding data
+        // Seeding data
         modelBuilder.Entity<Inventory>().HasData(
             new Inventory { InventoryId = 1, InventoryName = "Electric Engine", Price = 1000, Quantity = 1 },
             new Inventory { InventoryId = 2, InventoryName = "Body", Price = 400, Quantity = 1 },

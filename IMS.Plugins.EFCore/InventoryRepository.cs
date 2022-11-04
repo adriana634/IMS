@@ -13,17 +13,20 @@ public class InventoryRepository : IInventoryRepository
         this.db = db;
     }
 
-    public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
+    public async Task<IReadOnlyList<Inventory>> GetInventoriesByNameAsync(string name)
     {
-        return await db.Inventories
+        var inventories = await db.Inventories
             .Where(inventory => inventory.InventoryName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
             .Include(product => product.ProductInventories)
+            .AsNoTracking()
             .ToListAsync();
+
+        return inventories.AsReadOnly(); 
     }
 
     public async Task AddInventoryAsync(Inventory inventory)
     {
-        //To prevent different inventories from having the same name
+        // To prevent different inventories from having the same name
         if (db.Inventories.Any(dbInventory => dbInventory.InventoryName.IgnoreCaseEquals(inventory.InventoryName)))
             return;
 
@@ -33,7 +36,7 @@ public class InventoryRepository : IInventoryRepository
 
     public async Task UpdateInventoryAsync(Inventory inventory)
     {
-        //To prevent different inventories from having the same name
+        // To prevent different inventories from having the same name
         if (db.Inventories.Any(dbInventory => dbInventory.InventoryId != inventory.InventoryId 
                                             && dbInventory.InventoryName.IgnoreCaseEquals(inventory.InventoryName)))
             return;

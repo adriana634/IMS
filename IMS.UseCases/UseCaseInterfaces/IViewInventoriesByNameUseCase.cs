@@ -4,5 +4,5 @@ namespace IMS.UseCases;
 
 public interface IViewInventoriesByNameUseCase
 {
-    Task<IEnumerable<Inventory>> ExecuteAsync(string name = "");
+    Task<IReadOnlyList<Inventory>> ExecuteAsync(string name = "");
 }

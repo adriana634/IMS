@@ -12,7 +12,7 @@ public class ViewInventoriesByNameUseCase : IViewInventoriesByNameUseCase
         this.inventoryRepository = inventoryRepository;
     }
 
-    public async Task<IEnumerable<Inventory>> ExecuteAsync(string name = "")
+    public async Task<IReadOnlyList<Inventory>> ExecuteAsync(string name = "")
     {
         return await inventoryRepository.GetInventoriesByNameAsync(name);
     }

@@ -13,18 +13,21 @@ public class ProductRepository : IProductRepository
         this.db = db;
     }
 
-    public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
+    public async Task<IReadOnlyList<Product>> GetProductsByNameAsync(string name)
     {
-        return await db.Products
+        var products = await db.Products
             .Where(product => product.ProductName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
             .Include(product => product.ProductInventories)
             .ThenInclude(productInventory => productInventory.Inventory)
+            .AsNoTracking()
             .ToListAsync();
+
+        return products.AsReadOnly();
     }
 
     public async Task AddProductAsync(Product product)
     {
-        //To prevent different products from having the same name
+        // To prevent different products from having the same name
         if (db.Products.Any(dbProduct => dbProduct.ProductName.IgnoreCaseEquals(product.ProductName)))
             return;
 
@@ -34,7 +37,7 @@ public class ProductRepository : IProductRepository
 
     public async Task UpdateProductAsync(Product product)
     {
-        //To prevent different products from having the same name
+        // To prevent different products from having the same name
         if (db.Products.Any(dbProduct => dbProduct.ProductId != product.ProductId
                                             && dbProduct.ProductName.IgnoreCaseEquals(product.ProductName)))
             return;
