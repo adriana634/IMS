@@ -2,10 +2,10 @@
 
 namespace IMS.WebApp.ViewModels;
 
-public sealed class ProduceViewModel
+public sealed class SellViewModel
 {
     [Required]
-    public string ProductionNumber { get; set; }
+    public string SalesOrderNumber { get; set; }
 
     [Required]
     public int ProductId { get; set; }
@@ -15,5 +15,9 @@ public sealed class ProduceViewModel
 
     [Required]
     [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to 1")]
-    public int QuantityToProduce { get; set; }
+    public int QuantityToSell { get; set; }
+
+    [Required]
+    [Range(0, double.MaxValue, ErrorMessage = "Price must be greater or equal to 0")]
+    public double ProductPrice { get; set; }
 }

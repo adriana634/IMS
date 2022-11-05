@@ -10,9 +10,11 @@ public sealed class Product
     [Required]
     public string ProductName { get; set; }
 
+    [Required]
     [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to 0")]
     public int Quantity { get; set; }
 
+    [Required]
     [Range(0, double.MaxValue, ErrorMessage = "Price must be greater or equal to 0")]
     [Product_EnsurePriceIsGreaterThanInventoriesPrice]
     public double Price { get; set; }
@@ -31,9 +33,18 @@ public sealed class Product
 
     public bool ValidateEnoughInventoriesForProducing(int quantity)
     {
-        if (ProductInventories.Any(productInventory => productInventory.InventoryQuantity * quantity > productInventory.Inventory.Quantity))
+        bool inventoriesAreNotEnough = ProductInventories
+            .Any(productInventory => productInventory.InventoryQuantity * quantity > productInventory.Inventory.Quantity);
+
+        if (inventoriesAreNotEnough)
             return false;
 
+        return true;
+    }
+
+    public bool ValidateEnoughQuantityForSelling(int quantity)
+    {
+        if (quantity > Quantity) return false;
         return true;
     }
 

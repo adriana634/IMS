@@ -1,0 +1,72 @@
+﻿@page "/sell"
+@using IMS.WebApp.ViewModels
+
+@inject ISellProductUseCase SellProductUseCase
+
+<ErrorMessageComponent ErrorMessage="@errorMessage" />
+<h3>Sell Product</h3>
+<br />
+
+<EditForm Model="sellViewModel" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="purchaseOrder">Sales Order Number</label>
+        <InputText id="purchaseOrder" @bind-Value="sellViewModel.SalesOrderNumber" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Product to Sell</label>
+        <SelectProductComponent OnSelectProduct="OnSelectProduct" />
+        <InputText id="inventory" class="form-control" @bind-Value="sellViewModel.ProductName" disabled="disabled" />
+        <input type="hidden" value="@selectedProduct?.ProductId">
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Price</label>
+        <InputNumber id="price" @bind-Value="sellViewModel.ProductPrice" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <InputNumber id="quantity" @bind-Value="sellViewModel.QuantityToSell" class="form-control" />
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Sell</button>
+</EditForm>
+
+@code {
+    private SellViewModel sellViewModel = new SellViewModel();
+    private Product? selectedProduct;
+    private string? errorMessage;
+
+    private async Task OnValidSubmit()
+    {
+        if (selectedProduct!.ValidateEnoughQuantityForSelling(sellViewModel.QuantityToSell) == false)
+        {
+            errorMessage = $"The quantity of the product is not enough. Only {selectedProduct.Quantity} are avalaible.";
+            return;
+        }
+
+        await SellProductUseCase.ExecuteAsync(
+            sellViewModel.SalesOrderNumber,
+            selectedProduct!,
+            sellViewModel.QuantityToSell,
+            "John Doe"
+        );
+
+        sellViewModel = new SellViewModel();
+        selectedProduct = null;
+        errorMessage = null;
+    }
+
+    private void OnSelectProduct(Product product)
+    {
+        selectedProduct = product;
+        sellViewModel.ProductId = product.ProductId;
+        sellViewModel.ProductName = product.ProductName;
+        sellViewModel.ProductPrice = product.Price;
+    }
+}

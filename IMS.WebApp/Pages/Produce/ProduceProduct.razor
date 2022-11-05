@@ -49,12 +49,8 @@
             errorMessage = $"The inventories are not enough for producing { selectedProduct.ProductName } X { produceViewModel.QuantityToProduce } times";
             return;
         }
-        else
-        {
-            errorMessage = null;
-        }
 
-        await ProduceProductUseCase.ExecuteAync(
+        await ProduceProductUseCase.ExecuteAsync(
             produceViewModel.ProductionNumber,
             selectedProduct!,
             produceViewModel.QuantityToProduce,
@@ -63,6 +59,7 @@
 
         produceViewModel = new ProduceViewModel();
         selectedProduct = null;
+        errorMessage = null;
     }
 
     private void OnSelectProduct(Product product)

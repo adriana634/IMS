@@ -22,7 +22,7 @@ public sealed class ProduceProductUseCase : IProduceProductUseCase
         this.productTransactionRepository = productTransactionRepository;
     }
 
-    public async Task ExecuteAync(string productionNumber, Product product, int quantity, string doneBy)
+    public async Task ExecuteAsync(string productionNumber, Product product, int quantity, string doneBy)
     {
         await productTransactionRepository.ProduceAsync(productionNumber, product, quantity, doneBy);
 

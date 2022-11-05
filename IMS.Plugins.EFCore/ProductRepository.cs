@@ -19,7 +19,6 @@ public sealed class ProductRepository : IProductRepository
             .Where(product => product.ProductName.IgnoreCaseContains(name) || string.IsNullOrWhiteSpace(name))
             .Include(product => product.ProductInventories)
             .ThenInclude(productInventory => productInventory.Inventory)
-            .AsNoTracking()
             .ToListAsync();
 
         return products.AsReadOnly();
