@@ -18,7 +18,24 @@ public sealed class ProductTransactionRepository : IProductTransactionRepository
         int quantity,
         string doneBy)
     {
-        product.TakeAwayInventories(quantity);
+        foreach (var productInventory in product.ProductInventories)
+        {
+            int quantityBefore = productInventory.Inventory.Quantity;
+
+            productInventory.Inventory.Quantity -= quantity * productInventory.InventoryQuantity;
+
+            var inventoryTransaction = new InventoryTransaction {
+                ProductionNumber = productionNumber,
+                InventoryId = productInventory.InventoryId,
+                QuantityBefore = quantityBefore,
+                QuantityAfter = productInventory.Inventory.Quantity,
+                ActivityType = InventoryTransactionType.ProduceProduct,
+                TransactionDate = DateTime.Now,
+                DoneBy = doneBy,
+                UnitPrice = product.Price
+            };
+            db.InventoryTransactions.Add(inventoryTransaction);
+        }
 
         var productTransaction = new ProductTransaction 
         {
@@ -31,8 +48,8 @@ public sealed class ProductTransactionRepository : IProductTransactionRepository
             DoneBy = doneBy,
             UnitPrice = product.Price
         };
-
         db.ProductTransactions.Add(productTransaction);
+
         await db.SaveChangesAsync();
     }
 
@@ -43,8 +60,7 @@ public sealed class ProductTransactionRepository : IProductTransactionRepository
         double price,
         string doneBy)
     {
-        db.ProductTransactions.Add(new ProductTransaction 
-        {
+        var productTransaction = new ProductTransaction {
             SalesOrderNumber = salesOrderNumber,
             ProductId = product.ProductId,
             QuantityBefore = product.Quantity,
@@ -53,7 +69,9 @@ public sealed class ProductTransactionRepository : IProductTransactionRepository
             TransactionDate = DateTime.Now,
             DoneBy = doneBy,
             UnitPrice = price
-        });
+        };
+        db.ProductTransactions.Add(productTransaction);
+
         await db.SaveChangesAsync();
     }
 }

@@ -8,7 +8,9 @@ public sealed class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
     private readonly IInventoryTransactionRepository inventoryTransactionRepository;
     private readonly IInventoryRepository inventoryRepository;
 
-    public PurchaseInventoryUseCase(IInventoryTransactionRepository inventoryTransactionRepository, IInventoryRepository inventoryRepository)
+    public PurchaseInventoryUseCase(
+        IInventoryTransactionRepository inventoryTransactionRepository,
+        IInventoryRepository inventoryRepository)
     {
         this.inventoryTransactionRepository = inventoryTransactionRepository;
         this.inventoryRepository = inventoryRepository;

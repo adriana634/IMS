@@ -1,0 +1,90 @@
+﻿@page "/reports/inventory"
+
+@using IMS.WebApp.Extensions
+
+@inject ISearchInventoryTransactionsUseCase SearchInventoryTransactionsUseCase
+
+<h3>Inventory Transactions Report</h3>
+<br />
+
+<div class="row">
+    <div class="col">
+        <label for="inventory">Inventory Name</label>
+        <input id="inventory" type="text" class="form-control" @bind-value="inventoryName" />
+    </div>
+    <div class="col">
+        <label for="dateFrom">Date From</label>
+        <input id="dateFrom" type="date" class="form-control" @bind-value="dateFrom" />
+    </div>
+    <div class="col">
+        <label for="dateTo">Date To</label>
+        <input id="dateTo" type="date" class="form-control" @bind-value="dateTo" />
+    </div>
+    <div class="col">
+        <label for="activityType">Activity Type</label>
+        <select id="activityType" class="form-control" @bind="searchType">
+            @foreach (Enum transactionType in Enum.GetValues(typeof(InventoryTransactionSearchType)))
+            {
+                <option value="@transactionType">@transactionType.GetDisplayName()</option>
+            }   
+        </select>
+    </div>
+    <div class="col">
+        <label>&nbsp;</label>
+        <button type="button" class="btn btn-primary form-control" @onclick="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+            Search
+        </button>
+    </div>
+</div>
+@if (inventoryTransactions != null)
+{
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Inventory</th>
+                <th>Activity</th>
+                <th>Qty Before</th>
+                <th>Qty After</th>
+                <th>PO#</th>
+                <th>Production #</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in inventoryTransactions)
+            {
+                <tr>
+                    <td>@transaction.TransactionDate.ToString("MM/dd/yyyy")</td>
+                    <td>@transaction.Inventory.InventoryName</td>
+                    <td>@transaction.ActivityType.GetDisplayName()</td>
+                    <td>@transaction.QuantityBefore</td>
+                    <td>@transaction.QuantityAfter</td>
+                    <td>@transaction.PurchaseOrderNumber</td>
+                    <td>@transaction.ProductionNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string? inventoryName;
+    private DateTime? dateFrom;
+    private DateTime? dateTo;
+    private InventoryTransactionSearchType searchType;
+
+    private IEnumerable<InventoryTransaction>? inventoryTransactions;
+
+    private async Task Search() 
+    {
+        inventoryTransactions = await SearchInventoryTransactionsUseCase.ExecuteAsync(
+            inventoryName,
+            dateFrom,
+            dateTo,
+            searchType
+        );
+    }
+}

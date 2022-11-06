@@ -16,8 +16,8 @@
         <InputText id="purchaseOrder" @bind-Value="purchaseViewModel.PurchaseOrderNumber" class="form-control" />
     </div>
 
-        <div class="form-group">
-        <label for="quantity">Inventory to Purchase</label>
+    <div class="form-group">
+        <label>Inventory to Purchase</label>
         <SelectInventoryComponent OnSelectInventory="OnSelectInventory" />
         <InputText id="inventory" class="form-control" @bind-Value="purchaseViewModel.InventoryName" disabled="disabled" />
         <input type="hidden" value="@selectedInventory?.InventoryId">

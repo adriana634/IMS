@@ -17,9 +17,9 @@
     </div>
 
     <div class="form-group">
-        <label for="quantity">Product to Produce</label>
+        <label>Product to Produce</label>
         <SelectProductComponent OnSelectProduct="OnSelectProduct" />
-        <InputText id="inventory" class="form-control" @bind-Value="produceViewModel.ProductName" disabled="disabled" />
+        <InputText id="product" class="form-control" @bind-Value="produceViewModel.ProductName" disabled="disabled" />
         <input type="hidden" value="@selectedProduct?.ProductId">
         @if (selectedProduct != null)
         {

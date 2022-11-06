@@ -12,7 +12,7 @@ public sealed class ViewProductsUseCase : IViewProductsByNameUseCase
         this.productRepository = productRepository;
     }
 
-    public async Task<IEnumerable<Product>> ExecuteAsync(string name = "")
+    public async Task<IReadOnlyList<Product>> ExecuteAsync(string name = "")
     {
         return await productRepository.GetProductsByNameAsync(name);
     }

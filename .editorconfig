@@ -156,6 +156,9 @@ dotnet_diagnostic.CS8618.severity = suggestion
 dotnet_diagnostic.CS8601.severity = suggestion
 csharp_space_around_binary_operators = before_and_after
 
+# CS8602: Dereference of a possibly null reference.
+dotnet_diagnostic.CS8602.severity = suggestion
+
 [*.{cs,vb}]
 #### Naming styles ####
 

@@ -47,12 +47,4 @@ public sealed class Product
         if (quantity > Quantity) return false;
         return true;
     }
-
-    public void TakeAwayInventories(int quantity)
-    {
-        foreach (var productInventory in ProductInventories)
-        {
-            productInventory.Inventory.Quantity -= quantity * productInventory.InventoryQuantity;
-        }
-    }
 }
