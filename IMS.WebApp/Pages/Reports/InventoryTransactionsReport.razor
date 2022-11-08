@@ -1,6 +1,6 @@
 ﻿@page "/reports/inventory"
 
-@using IMS.WebApp.Extensions
+@using Humanizer
 
 @inject ISearchInventoryTransactionsUseCase SearchInventoryTransactionsUseCase
 
@@ -25,7 +25,7 @@
         <select id="activityType" class="form-control" @bind="searchType">
             @foreach (Enum transactionType in Enum.GetValues(typeof(InventoryTransactionSearchType)))
             {
-                <option value="@transactionType">@transactionType.GetDisplayName()</option>
+                <option value="@transactionType">@transactionType.Humanize()</option>
             }   
         </select>
     </div>
@@ -59,7 +59,7 @@
                 <tr>
                     <td>@transaction.TransactionDate.ToString("MM/dd/yyyy")</td>
                     <td>@transaction.Inventory.InventoryName</td>
-                    <td>@transaction.ActivityType.GetDisplayName()</td>
+                    <td>@transaction.ActivityType.Humanize()</td>
                     <td>@transaction.QuantityBefore</td>
                     <td>@transaction.QuantityAfter</td>
                     <td>@transaction.PurchaseOrderNumber</td>

@@ -1,4 +1,5 @@
-﻿using IMS.CoreBusiness;
+﻿using AutoMapper;
+using IMS.CoreBusiness;
 using IMS.UseCases.PluginInterfaces;
 
 namespace IMS.UseCases;
@@ -6,10 +7,12 @@ namespace IMS.UseCases;
 public class SearchInventoryTransactionsUseCase : ISearchInventoryTransactionsUseCase
 {
     private readonly IInventoryTransactionRepository inventoryTransactionRepository;
+    private readonly IMapper mapper;
 
-    public SearchInventoryTransactionsUseCase(IInventoryTransactionRepository inventoryTransactionRepository)
+    public SearchInventoryTransactionsUseCase(IInventoryTransactionRepository inventoryTransactionRepository, IMapper mapper)
     {
         this.inventoryTransactionRepository = inventoryTransactionRepository;
+        this.mapper = mapper;
     }
 
     public async Task<IReadOnlyList<InventoryTransaction>> ExecuteAsync(
@@ -18,21 +21,7 @@ public class SearchInventoryTransactionsUseCase : ISearchInventoryTransactionsUs
             DateTime? dateTo,
             InventoryTransactionSearchType searchType)
     {
-        InventoryTransactionType? inventoryTransactionType = null;
-
-        switch (searchType)
-        {
-            case InventoryTransactionSearchType.AllActivities:
-                inventoryTransactionType = null;
-                break;
-            case InventoryTransactionSearchType.PurchaseInventory:
-                inventoryTransactionType = InventoryTransactionType.PurchaseInventory;
-                break;
-            case InventoryTransactionSearchType.ProduceProduct:
-                inventoryTransactionType = InventoryTransactionType.ProduceProduct;
-                break;
-        }
-
+        var inventoryTransactionType = mapper.Map<InventoryTransactionType?>(searchType);
         return await inventoryTransactionRepository.GetInventoryTransactions(inventoryName, dateFrom, dateTo, inventoryTransactionType);
     }
 }

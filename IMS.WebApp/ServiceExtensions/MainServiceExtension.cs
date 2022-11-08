@@ -1,9 +1,11 @@
 ﻿using IMS.Plugins.EFCore;
+using IMS.UseCases.Mapping;
 using IMS.WebApp.Areas.Identity;
 using IMS.WebApp.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 namespace IMS.WebApp.ServiceExtensions;
 
 internal static class MainServiceExtension
@@ -17,6 +19,8 @@ internal static class MainServiceExtension
 
         services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        services.AddAutoMapper(typeof(MapperProfile));
 
         services.AddRazorPages();
         services.AddServerSideBlazor();
