@@ -14,11 +14,11 @@
     </div>
     <div class="col">
         <label for="dateFrom">Date From</label>
-        <input id="dateFrom" type="date" class="form-control" @bind-value="dateFrom" />
+        <input id="dateFrom" type="date" class="form-control" @bind-value="dateFrom" max="@((dateTo.HasValue) ? @dateTo?.ToString("O") : today.ToString("O"))" />
     </div>
     <div class="col">
         <label for="dateTo">Date To</label>
-        <input id="dateTo" type="date" class="form-control" @bind-value="dateTo" />
+        <input id="dateTo" type="date" class="form-control" @bind-value="dateTo" min="@dateFrom?.ToString("O")" max="@today.ToString("O")" />
     </div>
     <div class="col">
         <label for="activityType">Activity Type</label>
@@ -71,6 +71,8 @@
 }
 
 @code {
+    private static DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+
     private string? productName;
     private DateOnly? dateFrom;
     private DateOnly? dateTo;
