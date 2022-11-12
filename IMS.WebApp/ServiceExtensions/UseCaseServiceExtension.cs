@@ -18,7 +18,8 @@ internal static class UseCaseExtension
             .AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>()
             .AddTransient<IProduceProductUseCase, ProduceProductUseCase>()
             .AddTransient<ISellProductUseCase, SellProductUseCase>()
-            .AddTransient<ISearchInventoryTransactionsUseCase, SearchInventoryTransactionsUseCase>();
+            .AddTransient<ISearchInventoryTransactionsUseCase, SearchInventoryTransactionsUseCase>()
+            .AddTransient<ISearchProductTransactionsUseCase, SearchProductTransactionsUseCase>();
 
         return services;
     } 

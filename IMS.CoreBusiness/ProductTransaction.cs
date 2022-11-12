@@ -9,6 +9,8 @@ public sealed class ProductTransaction
     [Required]
     public int ProductId { get; set; }
 
+    public Product Product { get; set; }
+
     [Required]
     public ProductTransactionType ActivityType { get; set; }
 

@@ -4,5 +4,5 @@ namespace IMS.UseCases;
 
 public interface ISearchInventoryTransactionsUseCase
 {
-    Task<IReadOnlyList<InventoryTransaction>> ExecuteAsync(string? inventoryName, DateTime? dateFrom, DateTime? dateTo, InventoryTransactionSearchType searchType);
+    Task<IReadOnlyList<InventoryTransaction>> ExecuteAsync(string? inventoryName, DateOnly? dateFrom, DateOnly? dateTo, InventoryTransactionSearchType searchType);
 }

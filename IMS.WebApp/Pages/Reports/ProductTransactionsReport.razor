@@ -1,16 +1,16 @@
-﻿@page "/reports/inventory"
+﻿@page "/reports/product"
 
 @using Humanizer
 
-@inject ISearchInventoryTransactionsUseCase SearchInventoryTransactionsUseCase
+@inject ISearchProductTransactionsUseCase SearchProductTransactionsUseCase
 
-<h3>Inventory Transactions Report</h3>
+<h3>Product Transactions Report</h3>
 <br />
 
 <div class="row">
     <div class="col">
-        <label for="inventory">Inventory Name</label>
-        <input id="inventory" type="text" class="form-control" @bind-value="inventoryName" />
+        <label for="product">Product Name</label>
+        <input id="product" type="text" class="form-control" @bind-value="productName" />
     </div>
     <div class="col">
         <label for="dateFrom">Date From</label>
@@ -23,7 +23,7 @@
     <div class="col">
         <label for="activityType">Activity Type</label>
         <select id="activityType" class="form-control" @bind="searchType">
-            @foreach (Enum transactionType in Enum.GetValues(typeof(InventoryTransactionSearchType)))
+            @foreach (Enum transactionType in Enum.GetValues(typeof(ProductTransactionSearchType)))
             {
                 <option value="@transactionType">@transactionType.Humanize()</option>
             }   
@@ -39,31 +39,31 @@
         </button>
     </div>
 </div>
-@if (inventoryTransactions != null)
+@if (productTransactions != null)
 {
     <table class="table mt-3">
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Inventory</th>
+                <th>Product</th>
                 <th>Activity</th>
                 <th>Qty Before</th>
                 <th>Qty After</th>
-                <th>PO#</th>
                 <th>Production #</th>
+                <th>SO#</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var transaction in inventoryTransactions)
+            @foreach (var transaction in productTransactions)
             {
                 <tr>
                     <td>@transaction.TransactionDate.ToString("MM/dd/yyyy")</td>
-                    <td>@transaction.Inventory.InventoryName</td>
+                    <td>@transaction.Product.ProductName</td>
                     <td>@transaction.ActivityType.Humanize()</td>
                     <td>@transaction.QuantityBefore</td>
                     <td>@transaction.QuantityAfter</td>
-                    <td>@transaction.PurchaseOrderNumber</td>
                     <td>@transaction.ProductionNumber</td>
+                    <td>@transaction.SalesOrderNumber</td>
                 </tr>
             }
         </tbody>
@@ -71,17 +71,17 @@
 }
 
 @code {
-    private string? inventoryName;
+    private string? productName;
     private DateOnly? dateFrom;
     private DateOnly? dateTo;
-    private InventoryTransactionSearchType searchType;
+    private ProductTransactionSearchType searchType;
 
-    private IEnumerable<InventoryTransaction>? inventoryTransactions;
+    private IEnumerable<ProductTransaction>? productTransactions;
 
     private async Task Search() 
     {
-        inventoryTransactions = await SearchInventoryTransactionsUseCase.ExecuteAsync(
-            inventoryName,
+        productTransactions = await SearchProductTransactionsUseCase.ExecuteAsync(
+            productName,
             dateFrom,
             dateTo,
             searchType

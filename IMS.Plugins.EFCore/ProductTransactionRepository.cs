@@ -1,5 +1,6 @@
 ﻿using IMS.CoreBusiness;
 using IMS.UseCases.PluginInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace IMS.Plugins.EFCore;
 
@@ -73,5 +74,29 @@ public sealed class ProductTransactionRepository : IProductTransactionRepository
         db.ProductTransactions.Add(productTransaction);
 
         await db.SaveChangesAsync();
+    }
+
+    public async Task<IReadOnlyList<ProductTransaction>> GetProductTransactionsAsync(
+        string? productName,
+        DateOnly? dateFrom,
+        DateOnly? dateTo,
+        ProductTransactionType? activityType)
+    {
+        var pt2 = db.ProductTransactions.ToList();
+
+        var query = from pt in db.ProductTransactions
+                    join prod in db.Products on pt.ProductId equals prod.ProductId
+                    where
+                        (string.IsNullOrEmpty(productName) || EF.Functions.Like(prod.ProductName, "%" + productName + "%"))
+                        && (dateFrom.HasValue == false || DateOnly.FromDateTime(pt.TransactionDate) >= dateFrom)
+                        && (dateTo.HasValue == false || DateOnly.FromDateTime(pt.TransactionDate) <= dateTo)
+                        && (activityType.HasValue == false || pt.ActivityType == activityType)
+                    select pt;
+
+        var productTransactions = await query.AsNoTracking()
+                                               .Include(productTransaction => productTransaction.Product)
+                                               .ToListAsync();
+
+        return productTransactions.AsReadOnly();
     }
 }

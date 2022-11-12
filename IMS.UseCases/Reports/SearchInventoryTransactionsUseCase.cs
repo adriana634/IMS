@@ -17,8 +17,8 @@ public class SearchInventoryTransactionsUseCase : ISearchInventoryTransactionsUs
 
     public async Task<IReadOnlyList<InventoryTransaction>> ExecuteAsync(
             string? inventoryName,
-            DateTime? dateFrom,
-            DateTime? dateTo,
+            DateOnly? dateFrom,
+            DateOnly? dateTo,
             InventoryTransactionSearchType searchType)
     {
         var inventoryTransactionType = mapper.Map<InventoryTransactionType?>(searchType);

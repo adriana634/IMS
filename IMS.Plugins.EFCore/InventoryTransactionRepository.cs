@@ -25,8 +25,8 @@ public sealed class InventoryTransactionRepository : IInventoryTransactionReposi
             PurchaseOrderNumber = purchaseOrderNumber,
             InventoryId = inventoryId,
             QuantityBefore = inventoryQuantity,
-            ActivityType = InventoryTransactionType.PurchaseInventory,
             QuantityAfter = inventoryQuantity + purchaseQuantity,
+            ActivityType = InventoryTransactionType.PurchaseInventory,
             TransactionDate = DateTime.Now,
             DoneBy = doneBy,
             UnitPrice = inventoryPrice
@@ -38,16 +38,16 @@ public sealed class InventoryTransactionRepository : IInventoryTransactionReposi
 
     public async Task<IReadOnlyList<InventoryTransaction>> GetInventoryTransactions(
         string? inventoryName,
-        DateTime? dateFrom,
-        DateTime? dateTo,
+        DateOnly? dateFrom,
+        DateOnly? dateTo,
         InventoryTransactionType? activityType)
     {
         var query = from it in db.InventoryTransactions
                     join inv in db.Inventories on it.InventoryId equals inv.InventoryId
                     where
-                        (string.IsNullOrEmpty(inventoryName) || inv.InventoryName.Contains(inventoryName, StringComparison.OrdinalIgnoreCase))
-                        && (dateFrom.HasValue == false || it.TransactionDate >= dateFrom)
-                        && (dateTo.HasValue == false || it.TransactionDate <= dateTo)
+                        (string.IsNullOrEmpty(inventoryName) || EF.Functions.Like(inv.InventoryName, "%" + inventoryName + "%"))
+                        && (dateFrom.HasValue == false || DateOnly.FromDateTime(it.TransactionDate) >= dateFrom)
+                        && (dateTo.HasValue == false || DateOnly.FromDateTime(it.TransactionDate) <= dateTo)
                         && (activityType.HasValue == false || it.ActivityType == activityType)
                     select it;
 
